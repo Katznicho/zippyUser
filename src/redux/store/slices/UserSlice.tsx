@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserState {
   isLoggedIn: boolean;
+  guestUser: boolean
   user: User
   authToken: string,
 }
@@ -14,12 +15,14 @@ interface User {
   email: string;
   phone: string;
   role: string,
-  is_new_user: boolean,
+  // is_new_user: boolean,
   displayPicture: string;
+  // guestUser: boolean
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
+  guestUser: true,
   user: {
     UID: '',
     fname: '',
@@ -28,7 +31,8 @@ const initialState: UserState = {
     displayPicture: '',
     role: "",
     phone: "",
-    is_new_user: true
+    // is_new_user: true,
+
   },
   authToken: '',
 
@@ -47,6 +51,7 @@ export const userSlice = createSlice({
 
     logoutUser: state => {
       state.isLoggedIn = false;
+      state.guestUser = true;
       state.user = {
         UID: '',
         fname: '',
@@ -54,7 +59,6 @@ export const userSlice = createSlice({
         email: '',
         displayPicture: '',
         role: "",
-        is_new_user: false,
         phone: ""
       }
     },
@@ -71,7 +75,7 @@ export const userSlice = createSlice({
       }
     },
     updateIsNewUser: (state, action: PayloadAction<boolean>) => {
-      state.user.is_new_user = false;
+      // state.user.is_new_user = false;
     }
   },
 });

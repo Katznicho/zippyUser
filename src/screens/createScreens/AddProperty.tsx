@@ -118,7 +118,6 @@ const AddProperty = () => {
 
             setCategories(data?.data)
         }).catch((err) => {
-
         })
 
         fetch(GET_ALL_SERVICES, {

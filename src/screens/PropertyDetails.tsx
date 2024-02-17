@@ -1,22 +1,35 @@
-import { StyleSheet, Text, View, ScrollView, ImageBackground, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, Linking } from 'react-native'
 import React from 'react'
-import { KeyboardAwareScrollView } from 'react-native-ui-lib'
-import { generalStyles } from './utils/generatStyles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
-import { PUBLIC_STORAGE } from './utils/constants/constants'
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
+import useGetUserLocation from '../hooks/useGetUserLocation'
+import { generalStyles } from './utils/generatStyles'
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
+import GradientBGIcon from '../components/GradientBGIcon';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import GradientBGIcon from '../components/GradientBGIcon'
 import { onMakeCall } from './utils/helpers/helpers'
+import { PUBLIC_STORAGE } from './utils/constants/constants'
 
 
 
-const PropertyDetails: React.FC<any> = () => {
 
-    const tabBarHeight = useBottomTabBarHeight();
-    const { item } = useRoute<any>().params
+const StationDetails = () => {
+
     const navigation = useNavigation<any>();
+
+    const { data } = useRoute<any>().params;
+
+    const { position } = useGetUserLocation();
+
+
+
+    const openMapsForDirections = () => {
+        const destination = `${data?.latitude},${data?.longitude}`;
+        // console.log(destination)
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+        return Linking.openURL(url);
+    };
+
 
 
 
@@ -24,16 +37,28 @@ const PropertyDetails: React.FC<any> = () => {
         <KeyboardAwareScrollView
             style={[{ flex: 1, width: '100%' }, generalStyles.ScreenContainer]}
             keyboardShouldPersistTaps="always"
+            contentContainerStyle={{ paddingBottom: 100 }}
         >
+            {/* book now button */}
+            <View style={[generalStyles.absoluteStyles, { right: 10 }]}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={[generalStyles.loginContainer, { width: "100%" }]}
+                    onPress={() => navigation.navigate("BookNow", { data })}
+                >
+                    <Text style={generalStyles.loginText}>{'Book Now'}</Text>
+                </TouchableOpacity>
+            </View>
+            {/* book now button */}
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: tabBarHeight }}
+                // contentContainerStyle={{ paddingBottom: tabBarHeight }}
                 keyboardShouldPersistTaps="always"
             >
                 {/* show background image */}
                 <ImageBackground
-                    source={{ uri: `${PUBLIC_STORAGE}/properties/${item?.cover_image}` }}
-                    style={styles.ItemBackgroundImage}
+                    source={{ uri: `${PUBLIC_STORAGE}/properties/${data?.cover_image}` }}
+                    style={styles.dataBackgroundImage}
                 >
                     {/* back handler */}
                     <View style={styles.ImageHeaderBarContainerWithBack}>
@@ -60,43 +85,41 @@ const PropertyDetails: React.FC<any> = () => {
                     {/* more details */}
                 </ImageBackground>
                 {/* show background */}
-
-                {/* view more images */}
                 <View style={styles.cardContainer}>
                     <TouchableOpacity
                         activeOpacity={1}
                         style={[generalStyles.loginContainer, {
                             marginTop: 5,
-                            // backgroundColor: COLORS.primaryBlackHex,
-                            // color: COLORS.primaryOrangeHex
                         }]}
-                        onPress={() => navigation.navigate('PropertyImages', { item })}
+                        onPress={() => openMapsForDirections()}
                     >
-                        <Text style={generalStyles.loginText}>{'View More Images'}</Text>
+                        <Text style={generalStyles.loginText}>{'Take me there'}</Text>
                     </TouchableOpacity>
 
-
                     <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
-
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
                         <View>
                             <Text style={styles.CardTitle} >Name</Text>
-                            <Text style={styles.CardSubtitle}>{item?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.name ?? data?.codeName}</Text>
                         </View>
                         <View>
-                            <Text style={styles.CardTitle} >Category</Text>
-                            <Text style={styles.CardSubtitle}>{item?.category?.name}</Text>
+                            <Text style={styles.CardTitle} >Distance</Text>
+                            <Text style={styles.CardSubtitle}>
+                                {/* {calculateDistance(position.latitude, position.longitude, parseFloat(data?.latitude), parseFloat(data?.longitude))}
+                 kms away */}
+                                10 kms away
+                            </Text>
                         </View>
 
                     </View>
                     <View>
                         <View>
                             <Text style={styles.CardTitle} >Location</Text>
-                            <Text style={styles.CardSubtitle}>{item?.location}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.location}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Payment Period</Text>
-                            <Text style={styles.CardSubtitle}>{item?.payment_period?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.payment_period?.name}</Text>
                         </View>
 
                     </View>
@@ -104,11 +127,11 @@ const PropertyDetails: React.FC<any> = () => {
                     <View>
                         <View>
                             <Text style={styles.CardTitle} >Price</Text>
-                            <Text style={styles.CardSubtitle}>{item?.currency?.name} {item?.price}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.currency?.name} {data?.price}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Total Rooms</Text>
-                            <Text style={styles.CardSubtitle}>{item?.number_of_rooms}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.number_of_rooms}</Text>
                         </View>
 
                     </View>
@@ -144,22 +167,22 @@ const PropertyDetails: React.FC<any> = () => {
                     <View >
                         <View>
                             <Text style={styles.CardTitle} >Total Bedrooms</Text>
-                            <Text style={styles.CardSubtitle}>{item?.number_of_beds}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.number_of_beds}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Total Bathrooms</Text>
-                            <Text style={styles.CardSubtitle}>{item?.number_of_baths}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.number_of_baths}</Text>
                         </View>
 
                     </View>
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
                         <View>
                             <Text style={styles.CardTitle} >Status</Text>
-                            <Text style={styles.CardSubtitle}>{item?.status?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.status?.name}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Zippy ID</Text>
-                            <Text style={styles.CardSubtitle}>{item?.zippy_id}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.zippy_id}</Text>
                         </View>
 
                     </View>
@@ -167,11 +190,11 @@ const PropertyDetails: React.FC<any> = () => {
                     <View >
                         <View>
                             <Text style={styles.CardTitle} >Description</Text>
-                            <Text style={styles.CardSubtitle}>{item?.description}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.description}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Year Built</Text>
-                            <Text style={styles.CardSubtitle}>{item?.year_built}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.year_built}</Text>
                         </View>
 
                     </View>
@@ -179,11 +202,11 @@ const PropertyDetails: React.FC<any> = () => {
                     <View >
                         <View>
                             <Text style={styles.CardTitle} >Furnishing Status</Text>
-                            <Text style={styles.CardSubtitle}>{item?.furnishing_status}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.furnishing_status}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Property Size</Text>
-                            <Text style={styles.CardSubtitle}>{item?.property_size}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property_size}</Text>
                         </View>
 
                     </View>
@@ -191,11 +214,11 @@ const PropertyDetails: React.FC<any> = () => {
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
                         <View>
                             <Text style={styles.CardTitle} >Approved</Text>
-                            <Text style={styles.CardSubtitle}>{item?.is_approved ? 'Yes' : "No"}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Availability</Text>
-                            <Text style={styles.CardSubtitle}>{item?.is_available ? "Yes" : "No"}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.is_available ? "Yes" : "No"}</Text>
                         </View>
 
                     </View>
@@ -214,9 +237,9 @@ const PropertyDetails: React.FC<any> = () => {
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
                         <View>
                             <Text style={styles.CardTitle} >Services</Text>
-                            {/* <Text style={styles.CardSubtitle}>{item?.is_approved ? 'Yes' : "No"}</Text> */}
+                            {/* <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text> */}
                             {
-                                item?.services?.map((service: any, index: number) => {
+                                data?.services?.map((service: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{service?.name}</Text>
                                     )
@@ -226,7 +249,7 @@ const PropertyDetails: React.FC<any> = () => {
                         <View>
                             <Text style={styles.CardTitle} >Amentities</Text>
                             {
-                                item?.amenities?.map((amentity: any, index: number) => {
+                                data?.amenities?.map((amentity: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{amentity?.name}</Text>
                                     )
@@ -241,9 +264,9 @@ const PropertyDetails: React.FC<any> = () => {
                     <View >
                         <View>
                             <Text style={styles.CardTitle} >Public facilties</Text>
-                            {/* <Text style={styles.CardSubtitle}>{item?.is_approved ? 'Yes' : "No"}</Text> */}
+                            {/* <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text> */}
                             {
-                                item?.public_facilities?.map((facility: any, index: number) => {
+                                data?.public_facilities?.map((facility: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{facility}</Text>
                                     )
@@ -261,53 +284,39 @@ const PropertyDetails: React.FC<any> = () => {
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
                         <View>
                             <Text style={styles.CardTitle} >Owner</Text>
-                            <Text style={styles.CardSubtitle}>{item?.owner?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.owner?.name}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Phone Number</Text>
-                            <Text style={styles.CardSubtitle}>{item?.owner?.phone_number}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.owner?.phone_number}</Text>
                         </View>
-
-                    </View>
-                    {/* owner details */}
-
-
-
-                    <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
-
-                    {/* agent details */}
-                    <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
-                        <View>
-                            <Text style={styles.CardTitle} >Agent</Text>
-                            <Text style={styles.CardSubtitle}>{item?.agent?.name}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Phone Number</Text>
-                            <Text style={styles.CardSubtitle}>{item?.agent?.phone_number}</Text>
-                        </View>
-
 
                     </View>
                     <TouchableOpacity
                         activeOpacity={1}
                         style={[generalStyles.loginContainer, { marginTop: 0, padding: 10 }]}
-                        onPress={() => onMakeCall(item?.agent?.phone_number)}>
-                        <Text style={generalStyles.loginText}>{'Call Agent'}</Text>
+                        onPress={() => onMakeCall(data?.owner?.phone_number)}>
+                        <Text style={generalStyles.loginText}>{'Call Owner'}</Text>
                     </TouchableOpacity>
+                    {/* owner details */}
 
-                    {/* agent details */}
+
+
+
+
+
 
 
                 </View>
+                {/* {renderMap()} */}
 
-
-                {/* view more images */}
             </ScrollView>
+
         </KeyboardAwareScrollView>
     )
 }
 
-export default PropertyDetails
+export default StationDetails
 
 const styles = StyleSheet.create({
     cardContainer: {
@@ -322,6 +331,11 @@ const styles = StyleSheet.create({
         margin: 5,
         // marginHorizontal: 5
     },
+    hairLineStyles: {
+        width: "80%",
+        // marginHorizontal: 40,
+        marginVertical: 10
+    },
     CardTitle: {
         fontFamily: FONTFAMILY.poppins_medium,
         color: COLORS.primaryWhiteHex,
@@ -333,31 +347,24 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_10,
         // marginHorizontal: SPACING.space_10
     },
-    CardPriceCurrency: {
-        fontFamily: FONTFAMILY.poppins_semibold,
-        color: COLORS.primaryOrangeHex,
-        fontSize: FONTSIZE.size_12,
+    ImageHeaderBarContainerWithBack: {
+        padding: SPACING.space_30,
+        flexDirection: 'row',
+        aligndatas: 'center',
+        justifyContent: 'space-between',
     },
-    hairLineStyles: {
-        width: "80%",
-        // marginHorizontal: 40,
-        marginVertical: 10
+    dataBackgroundImage: {
+        width: '100%',
+        aspectRatio: 25 / 15,
+        justifyContent: 'space-between',
+    },
+    // Add a style for the map
+    map: {
+        height: 300,
+        marginVertical: 10,
     },
     spacingStyles: {
         marginHorizontal: 5,
         // marginVertical: 5
     },
-    ImageHeaderBarContainerWithBack: {
-        padding: SPACING.space_30,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    ItemBackgroundImage: {
-        width: '100%',
-        aspectRatio: 25 / 15,
-        justifyContent: 'space-between',
-    },
-
-
 })

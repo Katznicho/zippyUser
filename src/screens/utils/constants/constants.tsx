@@ -1,9 +1,26 @@
+import { Dimensions, Platform, StatusBar } from "react-native";
+
+export const LISTMARGIN = 10;
+export const WIDTH = Dimensions.get("screen").width - LISTMARGIN * 2;
+export const PHOTOS_STR = "photos";
+export const AMENITIES_STR = "amenities";
+export const DESCRIPTION_STR = "description";
+
+const baseHeight = 160;
+const iosNotch = 40;
+const iosHeight = baseHeight + iosNotch;
+let androidHeight = baseHeight;
+let androidNotch = 0;
+if (StatusBar.currentHeight) androidNotch = StatusBar.currentHeight;
+androidHeight += androidNotch;
+
+export const HEADERHEIGHT = Platform.OS === "ios" ? iosHeight : androidHeight;
+
+
 export const APP_GENDER = {
     MALE: 'Male',
     FEMALE: "Female"
 }
-
-
 
 export const PAYMENT_STATUS = {
     PENDING: "Pending",
@@ -21,6 +38,8 @@ export const PAYMENT_TYPE = {
     "Other": "Other",
     "Order": "Order"
 }
+
+
 
 
 export const DEFAULT_USER_PROFILE = "https://media.istockphoto.com/id/519078727/photo/male-silhouette-as-avatar-profile-picture.jpg?b=1&s=170667a&w=0&k=20&c=JzPsyMEFcdQp2UlFqLVeuOaj2bOpteXUWFR9FJzTnBM=";

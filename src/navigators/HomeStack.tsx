@@ -20,6 +20,7 @@ import AllUsers from '../screens/AllUsers';
 import PropertyImages from '../screens/PropertyImages';
 import EditPropertyServices from '../screens/EditPropertyServices';
 import HeaderBar from '../components/HeaderBar';
+import ZippyAlert from '../screens/ZippyAlert';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +30,7 @@ const HomeStack = () => {
     const navigation = useNavigation<any>();
 
     return (
-        <Stack.Navigator initialRouteName={!user?.is_new_user ? "HomeScreen" : "ChangePassword"} >
+        <Stack.Navigator initialRouteName={"HomeScreen"} >
             <Stack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
@@ -54,11 +55,11 @@ const HomeStack = () => {
 
                 options={{
                     animation: 'slide_from_bottom',
-                    // headerShown: true
-                    header: () => <HeaderBar
-                        title={`${user?.fname} ${user?.lname}`}
+                    headerShown: false
+                    // header: () => <HeaderBar
+                    //     title={`${user?.fname} ${user?.lname}`}
 
-                    />
+                    // />
                 }}
             >
 
@@ -81,6 +82,25 @@ const HomeStack = () => {
                 }}
             >
             </Stack.Screen>
+
+            {/* zippy alert */}
+            <Stack.Screen
+                name="ZippyAlert"
+                component={ZippyAlert}
+                // options={{ animation: 'slide_from_bottom' }}
+                options={{
+                    animation: 'slide_from_bottom',
+                    title: 'Zippy Alert',
+                    headerStyle: generalStyles.headerStyle,
+                    headerTitleStyle: generalStyles.titleHeaderStyles,
+                    headerTintColor: COLORS.primaryBlackHex,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => <ArrowBack />
+
+                }}
+            >
+            </Stack.Screen>
+            {/* zippy alert */}
 
             {/* chnage password */}
             <Stack.Screen

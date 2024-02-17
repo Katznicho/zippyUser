@@ -30,13 +30,13 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
 
 
 
-      <View style={styles.centerView}>
-        <Text style={styles.HeaderText}>{greetings}</Text>
+      {/* <View style={styles.centerView}>
+        <Text style={styles.HeaderText}>{"Finder"}</Text>
       </View>
 
       <View style={styles.centerView}>
         <Text style={styles.titleText}>{title}</Text>
-      </View>
+      </View> */}
 
     </View >
   );

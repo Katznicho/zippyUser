@@ -11,7 +11,7 @@ import DrawerNavigator from '../navigators/DrawerNavigator';
 const Stack = createNativeStackNavigator();
 
 const Base = () => {
-    const { isLoggedIn } = useSelector((state: RootState) => state.user);
+    const { isLoggedIn, guestUser } = useSelector((state: RootState) => state.user);
 
 
 
@@ -23,7 +23,7 @@ const Base = () => {
     return (
         <NavigationContainer>
             {
-                isLoggedIn ?
+                isLoggedIn || guestUser ?
                     <DrawerNavigator />
                     : <AuthStack />
             }

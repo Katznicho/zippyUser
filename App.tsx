@@ -33,7 +33,10 @@ const App = () => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <QueryClientProvider client={new QueryClient()}>
-            <StatusBar backgroundColor={COLORS.primaryOrangeHex} />
+            <StatusBar
+              backgroundColor={COLORS.primaryOrangeHex}
+            />
+
             <Base />
           </QueryClientProvider>
           <FlashMessage position="top" animated />

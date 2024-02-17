@@ -139,6 +139,38 @@ export const generalStyles = StyleSheet.create({
     paddingBottom: 100
   },
   progress: { marginTop: 10, alignSelf: 'center' },
+  CardTitle: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_14,
+  },
+  CardSubtitle: {
+    fontFamily: FONTFAMILY.poppins_light,
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_10,
+    // marginHorizontal: SPACING.space_10
+  },
+  CardPriceCurrency: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryOrangeHex,
+    fontSize: FONTSIZE.size_12,
+  },
+  container: {
+    backgroundColor: COLORS.primaryBlackHex,
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 5,
+    margin: 5,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5
+  },
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { COLORS } from '../theme/theme';
+import { COLORS, FONTFAMILY } from '../theme/theme';
 import CustomIcon from '../components/CustomIcon';
 import { RootState } from '../redux/store/dev';
 import { useSelector } from 'react-redux';
@@ -30,10 +30,11 @@ const TabNavigator = () => {
         tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: COLORS.primaryOrangeHex,
+        tabBarActiveTintColor: COLORS.primaryBlackHex,
         tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
-        // tabBarLabelStyle: styles.tabBarLabelStyle,
+        tabBarLabelStyle: styles.tabBarLabelStyle,
         tabBarStyle: styles.tabBarStyle,
+
 
       }}
     >
@@ -47,7 +48,7 @@ const TabNavigator = () => {
               name="home"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlackHex : COLORS.primaryLightGreyHex
               }
             />
           ),
@@ -93,7 +94,7 @@ const TabNavigator = () => {
               name="user"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlackHex : COLORS.primaryLightGreyHex
               }
             />
           ),
@@ -107,20 +108,21 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     height: 60,
-    position: 'absolute',
-    backgroundColor: COLORS.primaryBlackRGBA,
+    // position: 'absolute',
+    backgroundColor: COLORS.primaryOrangeHex,
     borderTopWidth: 0,
     elevation: 0,
-    borderTopColor: 'transparent',
+    // borderRadius: 25,
+    // marginHorizontal: 10,
+    // marginBottom: 10,
+    padding: 5
+  },
+  tabBarLabelStyle: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.poppins_semibold,
+    marginBottom: 5
+  }
 
-  },
-  BlurViewStyles: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
 });
 
 export default TabNavigator;

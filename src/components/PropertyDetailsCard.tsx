@@ -10,7 +10,7 @@ import { limitDescription } from '../screens/utils/helpers/helpers';
 import { useNavigation } from '@react-navigation/native';
 
 
-const PropertyCard = ({ property }: any) => {
+const PropertyDetailsCard = ({ property }: any) => {
 
     const [details, setDetails] = useState(
         {
@@ -119,18 +119,18 @@ const PropertyCard = ({ property }: any) => {
     )
 }
 
-export default PropertyCard
+export default PropertyDetailsCard
 
 const styles = StyleSheet.create({
     imageStyles: {
-        width: "100%",
+        width: 200,
         height: 100,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10
         // borderRadius: 10
     },
     container: {
-        width: "94%",
+        width: 200,
         height: 270,
         elevation: 10,
         marginHorizontal: 10,
