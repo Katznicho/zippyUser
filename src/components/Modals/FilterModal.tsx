@@ -8,10 +8,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 type Props = {
     openPicker: boolean;
     setOpenPicker: (openPicker: boolean) => void;
+    title: string
 
 };
 
-const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker }: Props) => {
+const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filters" }: Props) => {
 
     const refRBSheet = useRef<any>();
 
@@ -168,7 +169,7 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker }: Props) => {
                 <View style={[generalStyles.formContainer]}>
                     <View>
                         <Text style={generalStyles.formInputTextStyle}>
-                            Filters
+                            {title}
                         </Text>
                     </View>
                 </View>

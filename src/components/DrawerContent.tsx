@@ -18,7 +18,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Share from 'react-native-share';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { logoutUser } from '../redux/store/slices/UserSlice';
 import { LOGOUT } from '../screens/utils/constants/routes';
 
@@ -28,7 +27,7 @@ import { LOGOUT } from '../screens/utils/constants/routes';
 
 
 const DrawerContent = (props: any) => {
-    const { user, authToken } = useSelector((state: RootState) => state.user);
+    const { user, authToken, guestUser } = useSelector((state: RootState) => state.user);
     const [selectedItem, setSelectedItem] = useState<string>('Home');
     const navigation = useNavigation<any>()
     const [expanded, setExpanded] = useState(false);
@@ -66,8 +65,6 @@ const DrawerContent = (props: any) => {
                 })
                 .catch(error => {
                 });
-
-
 
         } catch (error) {
         }
@@ -107,7 +104,9 @@ const DrawerContent = (props: any) => {
                 >
                     <HeadProfileCard />
                     <View>
-                        <Text style={[generalStyles.textStyle]}>{user.fname} {user.lname}</Text>
+                        <Text style={[generalStyles.textStyle]}>
+                            {guestUser ? 'Hello Guest' : user.fname + ' ' + user.lname}
+                        </Text>
                     </View>
 
                 </View>

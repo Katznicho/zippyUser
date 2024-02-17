@@ -76,6 +76,11 @@ export const userSlice = createSlice({
     },
     updateIsNewUser: (state, action: PayloadAction<boolean>) => {
       // state.user.is_new_user = false;
+    },
+    showAuthScreen: (state, action: PayloadAction<boolean>) => {
+      state.guestUser = false;
+      state.isLoggedIn = false
+
     }
   },
 });
@@ -86,6 +91,7 @@ export const {
   logoutUser,
   updateProfilePicture,
   updateIsLoggedIn,
+  showAuthScreen
 } = userSlice.actions;
 
 export default userSlice.reducer;
