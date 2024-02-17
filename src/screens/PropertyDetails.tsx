@@ -6,9 +6,9 @@ import useGetUserLocation from '../hooks/useGetUserLocation'
 import { generalStyles } from './utils/generatStyles'
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
 import GradientBGIcon from '../components/GradientBGIcon';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import QRCode from 'react-native-qrcode-svg';
 import { onMakeCall } from './utils/helpers/helpers'
-import { PUBLIC_STORAGE } from './utils/constants/constants'
+
 
 
 
@@ -23,13 +23,14 @@ const StationDetails = () => {
 
 
 
+
+
     const openMapsForDirections = () => {
-        const destination = `${data?.latitude},${data?.longitude}`;
+        const destination = `${data?.lat},${data?.long}`;
         // console.log(destination)
         const url = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
         return Linking.openURL(url);
     };
-
 
 
 
@@ -39,17 +40,7 @@ const StationDetails = () => {
             keyboardShouldPersistTaps="always"
             contentContainerStyle={{ paddingBottom: 100 }}
         >
-            {/* book now button */}
-            <View style={[generalStyles.absoluteStyles, { right: 10 }]}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={[generalStyles.loginContainer, { width: "100%" }]}
-                    onPress={() => navigation.navigate("BookNow", { data })}
-                >
-                    <Text style={generalStyles.loginText}>{'Book Now'}</Text>
-                </TouchableOpacity>
-            </View>
-            {/* book now button */}
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 // contentContainerStyle={{ paddingBottom: tabBarHeight }}
@@ -57,7 +48,7 @@ const StationDetails = () => {
             >
                 {/* show background image */}
                 <ImageBackground
-                    source={{ uri: `${PUBLIC_STORAGE}/properties/${data?.cover_image}` }}
+                    source={{ uri: `${data?.cover_image}` }}
                     style={styles.dataBackgroundImage}
                 >
                     {/* back handler */}
@@ -80,7 +71,7 @@ const StationDetails = () => {
                     {/* back handler */}
 
                     {/* more details */}
-
+                    {/* book now button */}
 
                     {/* more details */}
                 </ImageBackground>
@@ -97,21 +88,42 @@ const StationDetails = () => {
                     </TouchableOpacity>
 
                     <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
+
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
                         <View>
                             <Text style={styles.CardTitle} >Name</Text>
-                            <Text style={styles.CardSubtitle}>{data?.name ?? data?.codeName}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.name}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Distance</Text>
-                            <Text style={styles.CardSubtitle}>
-                                {/* {calculateDistance(position.latitude, position.longitude, parseFloat(data?.latitude), parseFloat(data?.longitude))}
-                 kms away */}
-                                10 kms away
-                            </Text>
+
                         </View>
 
                     </View>
+                    {/* category and book now */}
+                    <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
+                        <View>
+                            <Text style={styles.CardTitle} >Category</Text>
+                            <Text style={styles.CardSubtitle}>{data?.category?.name}</Text>
+                        </View>
+                        <View>
+                            {/* <Text style={styles.CardTitle} >Distance</Text> */}
+                            {/* book now button */}
+                            <View>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={[generalStyles.loginContainer, { width: "100%" }]}
+                                    onPress={() => navigation.navigate("BookNow", { data })}
+                                >
+                                    <Text style={generalStyles.loginText}>{'Book Now'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            {/* book now button */}
+                        </View>
+
+                    </View>
+
+                    {/* category and book now */}
                     <View>
                         <View>
                             <Text style={styles.CardTitle} >Location</Text>
@@ -129,10 +141,7 @@ const StationDetails = () => {
                             <Text style={styles.CardTitle} >Price</Text>
                             <Text style={styles.CardSubtitle}>{data?.currency?.name} {data?.price}</Text>
                         </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Total Rooms</Text>
-                            <Text style={styles.CardSubtitle}>{data?.number_of_rooms}</Text>
-                        </View>
+
 
                     </View>
 
@@ -144,20 +153,11 @@ const StationDetails = () => {
                             <Text style={styles.CardSubtitle}>0</Text>
                         </View>
                         <View>
-                            <Text style={styles.CardTitle} >Actions</Text>
+                            <Text style={styles.CardTitle} >Scan Me</Text>
                             {/* actions area */}
-                            <View style={[generalStyles.flexStyles, { justifyContent: 'center', alignItems: "center" }]}>
-                                <AntDesign name="delete"
-                                    size={25}
-                                    color={COLORS.primaryRedHex}
-                                    style={styles.spacingStyles}
-                                />
-                                <AntDesign name="edit"
-                                    size={25}
-                                    color={COLORS.primaryOrangeHex}
-                                    style={styles.spacingStyles}
-                                />
-                            </View>
+                            <QRCode value={data?.zippy_id}
+                                size={50}
+                            />
                             {/* actions area */}
                         </View>
 
@@ -211,28 +211,7 @@ const StationDetails = () => {
 
                     </View>
 
-                    <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
-                        <View>
-                            <Text style={styles.CardTitle} >Approved</Text>
-                            <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Availability</Text>
-                            <Text style={styles.CardSubtitle}>{data?.is_available ? "Yes" : "No"}</Text>
-                        </View>
 
-                    </View>
-                    <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
-                        <View>
-                            <Text style={styles.CardTitle} >Total Likes</Text>
-                            <Text style={styles.CardSubtitle}>{0}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Comments</Text>
-                            <Text style={styles.CardSubtitle}>{0}</Text>
-                        </View>
-
-                    </View>
                     <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
                         <View>
@@ -299,19 +278,8 @@ const StationDetails = () => {
                         <Text style={generalStyles.loginText}>{'Call Owner'}</Text>
                     </TouchableOpacity>
                     {/* owner details */}
-
-
-
-
-
-
-
-
                 </View>
-                {/* {renderMap()} */}
-
             </ScrollView>
-
         </KeyboardAwareScrollView>
     )
 }

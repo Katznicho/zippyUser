@@ -35,9 +35,9 @@ export const GET_ALL_REGISTERED_PROPERTY_OWNERS = `${BASE_URL}/getAllRegisteredP
 export const GET_REGISTERED_USERS_BY_PAGE = `${BASE_URL}/getRegisterPropertyOwnersByPage`;
 export const VERIFY_PROPERTY_OWNER = `${BASE_URL}/verifyPropertyOwnerPhoneNumber`
 
-//Property owner
-// Route::get("getRegisterPropertyOfOwnerByPage", [PropertyOwnerController::class, "getRegisterPropertyByPage"]);
-// Route::post("getOwnerTotals", [PropertyOwnerController::class, "getOwnerTotals"]);
+//properties
+export const GET_ALL_PROPERTIES_BY_PAGINATION = `${BASE_URL}/getAllPropertiesByPagination`;
+//https://zippy.risidev.com/api/v1/getAllPropertiesByPagination
 
 //property owner
 export const GET_REGISTERED_OWNER_PROPERTY_BY_PAGE = `${BASE_URL}/getRegisterPropertyOfOwnerByPage`;
