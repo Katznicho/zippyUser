@@ -1,18 +1,34 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS, FONTFAMILY } from '../../theme/theme';
 import { generalStyles } from '../../screens/utils/generatStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Checkbox } from 'react-native-ui-lib';
+import { showMessage } from 'react-native-flash-message';
+import { RootState } from '../../redux/store/dev';
+import { useSelector } from 'react-redux';
+import { CREATE_ZIPPY_ALERT } from '../../screens/utils/constants/routes';
+import { ActivityIndicator } from '../ActivityIndicator';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
     openPicker: boolean;
     setOpenPicker: (openPicker: boolean) => void;
-    title: string
-
+    title: string,
+    categories: any,
+    amentities: any,
+    services: any,
+    setZippyAlert: (zippyAlert: any) => void,
+    zippyAlert: any,
+    onClearFilter: () => void,
+    bedRooms: any,
+    bathRooms: any,
+    onCreateZippyAlert: () => void
 };
 
-const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filters" }: Props) => {
+const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filters", categories, amentities, services, setZippyAlert, zippyAlert, onClearFilter, bedRooms, bathRooms, onCreateZippyAlert }: Props) => {
+    const { user, authToken } = useSelector((state: RootState) => state.user);
 
     const refRBSheet = useRef<any>();
 
@@ -24,102 +40,109 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
         }
     }, [openPicker]);
 
-    const [selectedCurrency, setSelectedCurrency] = useState<any>(null)
-    const [paymentPeriod, setPaymentPeriod] = useState<any>(null)
-    const [selectedBedRoom, setSelectedBedRoom] = useState<any>(null)
-    const [selectedBathRooms, setSelectedBathRooms] = useState<any>(null)
-    const [selectedPropertyType, setSelectedPropertyType] = useState<any>(null)
-    const [minimumPrice, setMinimumPrice] = useState<any>(null)
-    const [maximumPrice, setMaximumPrice] = useState<any>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+    const navigation = useNavigation<any>()
 
-    const [currencies, setCurrencies] = useState([
-        {
-            id: 1,
-            name: "UGX"
-        }, {
-            id: 2,
-            name: "USD"
-        }
-    ])
 
-    const [paymentPeriods, setPaymentPeriods] = useState([
-        {
-            id: 1,
-            name: "Monthly"
-        }, {
-            id: 2,
-            name: "Yearly"
-        }
-    ])
 
-    const [bedRooms, setBedRooms] = useState([
-        {
-            id: 1,
-            name: "Any"
+    // const onCreateZippyAlert = () => {
+    //     console.log("=======================", zippyAlert)
+    //     try {
+    //         if (
+    //             zippyAlert.name === "" ||
+    //             zippyAlert.email === "" ||
+    //             zippyAlert.phone === "" ||
+    //             zippyAlert.contactOptions.length === 0 ||
+    //             zippyAlert.amentities.length === 0 ||
+    //             zippyAlert.services.length === 0 ||
+    //             zippyAlert.propertyType === "" ||
+    //             zippyAlert.minimumPrice === "" ||
+    //             zippyAlert.maximumPrice === ""
 
-        },
-        {
-            id: 2,
-            name: "1"
-        }, {
-            id: 3,
-            name: "2"
-        },
-        {
-            id: 4,
-            name: "3"
-        }, {
-            id: 5,
-            name: "4"
-        }, {
-            id: 6,
-            name: "5+"
-        }
-    ])
+    //         ) {
 
-    const [bathRooms, setBathRooms] = useState([
-        {
-            id: 1,
-            name: "Any"
-        }, {
-            id: 2,
-            name: "1"
-        }, {
-            id: 3,
-            name: "2"
-        }, {
-            id: 4,
-            name: "3"
-        }, {
-            id: 5,
-            name: "4"
-        }, {
-            id: 6,
-            name: "5+"
-        }
-    ])
+    //             return showMessage({
+    //                 message: "All fields are required",
+    //                 type: "danger",
+    //                 autoHide: true,
+    //                 duration: 3000,
+    //             })
+    //         }
+    //         else {
+    //             setLoading(true)
+    //             const headers = {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${authToken}`
+    //             }
 
-    const [propertyTypes, setPropertyTypes] = useState([
-        {
-            id: 1,
-            name: "Any"
-        }, {
-            id: 2,
-            name: "House"
-        }, {
-            id: 3,
-            name: "Apartment"
-        }, {
-            id: 4,
-            name: "Rental"
-        }, {
-            id: 5,
-            name: "Flats"
-        }, {
-            id: 6,
-            name: "Shop"
-        }
-    ])
+    //             const formData = new FormData();
+    //             formData.append("name", zippyAlert.name);
+    //             formData.append("email", zippyAlert.email);
+    //             formData.append("phone", zippyAlert.phone);
+    //             formData.append("property_type", zippyAlert.propertyType);
+    //             formData.append("category_id", zippyAlert.propertyTypeID);
+    //             formData.append("minimum_price", zippyAlert.minimumPrice);
+    //             formData.append("maximum_price", zippyAlert.maximumPrice);
+
+    //             //services loop through and also append them as an array
+    //             zippyAlert?.services?.forEach((service: any) => {
+    //                 formData.append("services[]", service)
+    //             })
+
+    //             //amenities loop through and also append them as an array
+    //             zippyAlert?.amenities?.forEach((amenity: any) => {
+    //                 formData.append("amenities[]", amenity)
+    //             })
+
+    //             //contact options loop through and also append them as an array
+    //             // Loop through and append contact options as an array
+    //             zippyAlert?.contactOptions?.forEach((option: any) => {
+    //                 formData.append("contact_options[]", option)
+    //             })
+
+    //             fetch(CREATE_ZIPPY_ALERT, {
+    //                 method: 'POST',
+    //                 headers,
+    //                 body: formData
+    //             }).then((res) => res.json()).then((data) => {
+    //                 setLoading(false)
+    //                 if (data?.response == "success") {
+    //                     showMessage({
+    //                         message: "Alert created successfully",
+    //                         description: "Alert created successfully",
+    //                         type: "success",
+    //                         autoHide: true,
+    //                         duration: 3000,
+    //                     })
+    //                     return navigation.navigate("ZippyAlertStack")
+    //                 }
+    //                 else {
+    //                     if (data?.alert_max == true) {
+    //                         return showMessage({
+    //                             message: "Maximum number of alerts reached",
+    //                             description: "You can only create 5 alerts",
+    //                             type: "info",
+    //                             autoHide: true,
+    //                             duration: 3000,
+    //                         })
+    //                     }
+    //                 }
+    //             }).catch((err) => {
+
+    //             })
+    //         }
+
+    //     } catch (error) {
+    //         console.log(error)
+    //         return showMessage({
+    //             message: "Something went wrong",
+    //             type: "danger",
+    //             autoHide: true,
+    //             duration: 3000,
+    //         })
+    //     }
+    // }
+
 
 
 
@@ -175,7 +198,6 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                 </View>
                 <View style={[styles.hairLineStyles]} />
 
-
                 {/* property categories */}
                 <View style={[styles.viewStyles]}>
                     <View>
@@ -192,13 +214,14 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                         showsVerticalScrollIndicator={false}
                     >
                         {
-                            propertyTypes.map((propertyType: any) => (
+                            categories?.map((propertyType: any) => (
                                 <TouchableOpacity
+                                    activeOpacity={1}
                                     key={propertyType.id}
                                     style={[styles.touchableStyles, {
-                                        backgroundColor: selectedPropertyType === propertyType.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                                        backgroundColor: zippyAlert?.propertyTypeID === propertyType.id ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
                                     }]}
-                                    onPress={() => setSelectedPropertyType(propertyType.name)}
+                                    onPress={() => setZippyAlert({ ...zippyAlert, propertyType: propertyType.name, propertyTypeID: propertyType.id })}
                                 >
                                     <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>{propertyType.name}</Text>
                                 </TouchableOpacity>
@@ -207,74 +230,8 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                     </ScrollView>
                 </View>
                 {/* property categories */}
-                <View style={[styles.hairLineStyles]} />
 
 
-                {/* currency */}
-                <View style={[styles.viewStyles]}>
-                    <View>
-                        <Text style={generalStyles.CardTitle}>Select Currency</Text>
-                    </View>
-                    <View>
-                        <Text style={generalStyles.CardSubtitle}>
-                            Select your price range
-                        </Text>
-                    </View>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        {
-                            currencies.map((currency: any) => (
-                                <TouchableOpacity
-                                    key={currency.id}
-                                    style={[styles.touchableStyles, {
-                                        backgroundColor: selectedCurrency === currency.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-                                    }]}
-                                    onPress={() => setSelectedCurrency(currency.name)}
-                                >
-                                    <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>{currency.name}</Text>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </ScrollView>
-                </View>
-                {/* currency */}
-
-                <View style={[styles.hairLineStyles]} />
-
-                {/* payment period */}
-                <View style={[styles.viewStyles]}>
-                    <View>
-                        <Text style={generalStyles.CardTitle}>Payment Period</Text>
-                    </View>
-                    <View>
-                        <Text style={generalStyles.CardSubtitle}>
-                            Select payment period
-                        </Text>
-                    </View>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        {
-                            paymentPeriods.map((period: any) => (
-                                <TouchableOpacity
-                                    key={period.id}
-                                    style={[styles.touchableStyles, {
-                                        backgroundColor: paymentPeriod === period.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-                                    }]}
-                                    onPress={() => setPaymentPeriod(period.name)}
-                                >
-                                    <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>{period.name}</Text>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </ScrollView>
-                </View>
-                {/* payment period */}
                 <View style={[styles.hairLineStyles]} />
 
                 {/* price range */}
@@ -303,8 +260,10 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                     placeholderTextColor={COLORS.primaryWhiteHex}
                                     keyboardType="number-pad"
                                     placeholder={'enter minimum price'}
-                                    onChange={text => setMinimumPrice(text)}
-                                    value={minimumPrice}
+                                    onChangeText={text => setZippyAlert((prev: any) => {
+                                        return { ...prev, minimumPrice: text }
+                                    })}
+                                    value={zippyAlert?.minimumPrice}
                                     underlineColorAndroid="transparent"
                                     autoCapitalize="none"
 
@@ -327,8 +286,10 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                     placeholderTextColor={COLORS.primaryWhiteHex}
                                     keyboardType="number-pad"
                                     placeholder={'enter maximum price'}
-                                    onChange={text => setMaximumPrice(text)}
-                                    value={maximumPrice}
+                                    onChangeText={text => setZippyAlert((prev: any) => {
+                                        return { ...prev, maximumPrice: text }
+                                    })}
+                                    value={zippyAlert?.maximumPrice}
                                     underlineColorAndroid="transparent"
                                     autoCapitalize="none"
 
@@ -360,13 +321,14 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                         horizontal
                     >
                         {
-                            bedRooms.map((room: any) => (
+                            bedRooms?.map((room: any) => (
                                 <TouchableOpacity
+                                    activeOpacity={1}
                                     key={room.id}
                                     style={[styles.circleStyles, {
-                                        backgroundColor: selectedBedRoom === room.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                                        backgroundColor: zippyAlert?.selectedBedRoom === room.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
                                     }]}
-                                    onPress={() => setSelectedBedRoom(room.name)}
+                                    onPress={() => setZippyAlert({ ...zippyAlert, selectedBedRoom: room.name })}
                                 >
                                     <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>{room.name}</Text>
                                 </TouchableOpacity>
@@ -384,13 +346,14 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                         horizontal
                     >
                         {
-                            bathRooms.map((room: any) => (
+                            bathRooms?.map((room: any) => (
                                 <TouchableOpacity
+                                    activeOpacity={1}
                                     key={room.id}
                                     style={[styles.circleStyles, {
-                                        backgroundColor: selectedBathRooms === room.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                                        backgroundColor: zippyAlert?.selectedBathRooms === room.name ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
                                     }]}
-                                    onPress={() => setSelectedBathRooms(room.name)}
+                                    onPress={() => setZippyAlert({ ...zippyAlert, selectedBathRooms: room.name })}
                                 >
                                     <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>{room.name}</Text>
                                 </TouchableOpacity>
@@ -398,31 +361,143 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                         }
                     </ScrollView>
                 </View>
-                {/* bedrroooms */}
+                {/* bedroooms */}
+
+                {/* property amentities */}
+                <View style={[styles.viewStyles]}>
+                    <View>
+                        <Text style={generalStyles.CardTitle}>Property Amentities</Text>
+                    </View>
+                    <View>
+                        <Text style={generalStyles.CardSubtitle}>
+                            Select your desired property amentities
+                        </Text>
+                    </View>
+                    <View>
+                        {
+                            amentities?.map((item: any) => {
+                                return (
+                                    <Checkbox
+                                        key={item.id}
+                                        label={item.name}
+                                        value={zippyAlert.amentities?.includes(item.id)}
+                                        color={COLORS.primaryOrangeHex}
+                                        containerStyle={styles.viewStyles}
+                                        onValueChange={(isChecked: boolean) => {
+                                            // Check if the amenity ID is already in the array
+                                            const isAmenityInArray = zippyAlert?.amentities?.includes(item.id);
+
+                                            // Create a new array based on the checkbox state
+                                            let updatedAmenities: any[];
+
+                                            if (isChecked && !isAmenityInArray) {
+                                                // Add the amenity ID to the array if the checkbox is checked and the ID is not present
+                                                updatedAmenities = [...(zippyAlert?.amentities || []), item.id];
+                                            } else if (!isChecked && isAmenityInArray) {
+                                                // Remove the amenity ID from the array if the checkbox is unchecked and the ID is present
+                                                updatedAmenities = (zippyAlert?.amenities || []).filter((id: string) => id !== item.id);
+                                            } else {
+                                                // No change needed if the checkbox state and array state are consistent
+                                                updatedAmenities = zippyAlert?.amentities;
+                                            }
+
+                                            // Update the state
+                                            setZippyAlert((prev: any) => {
+                                                return { ...prev, amentities: updatedAmenities };
+                                            });
+                                        }}
+                                    />
+                                );
+                            })
+
+
+                        }
+                    </View>
+                </View>
+                {/* property amentities */}
                 <View style={[styles.hairLineStyles]} />
+
+                {/* property services */}
+                <View style={[styles.viewStyles]}>
+                    <View>
+                        <Text style={generalStyles.CardTitle}>Property Services</Text>
+                    </View>
+                    <View>
+                        <Text style={generalStyles.CardSubtitle}>
+                            Select your desired property services
+                        </Text>
+                    </View>
+                    <View>
+                        {
+                            services?.map((item: any) => {
+                                return (
+                                    <Checkbox
+                                        key={item.id}
+                                        label={item.name}
+                                        value={zippyAlert.services?.includes(item.id)}
+                                        color={COLORS.primaryOrangeHex}
+                                        containerStyle={styles.viewStyles}
+                                        onValueChange={(isChecked: boolean) => {
+                                            // Check if the service ID is already in the array
+                                            const isServiceInArray = zippyAlert.services?.includes(item.id);
+
+                                            // Create a new array based on the checkbox state
+                                            let updatedServices: any[];
+
+                                            if (isChecked && !isServiceInArray) {
+                                                // Add the service ID to the array if the checkbox is checked and the ID is not present
+                                                updatedServices = [...(zippyAlert.services || []), item.id];
+                                            } else if (!isChecked && isServiceInArray) {
+                                                // Remove the service ID from the array if the checkbox is unchecked and the ID is present
+                                                updatedServices = (zippyAlert.services || []).filter((id: string) => id !== item.id);
+                                            } else {
+                                                // No change needed if the checkbox state and array state are consistent
+                                                updatedServices = zippyAlert.services;
+                                            }
+
+                                            // Update the state
+                                            setZippyAlert((prev: any) => {
+                                                return { ...prev, services: updatedServices };
+                                            });
+                                        }}
+                                    />
+                                );
+                            })
+
+                        }
+                    </View>
+                </View>
+                {/* property services */}
+
+                <View style={[styles.hairLineStyles]} />
+
+                {loading && <ActivityIndicator />}
 
                 <View style={[generalStyles.flexStyles, { alignItems: 'center', justifyContent: 'space-around' }]}>
 
                     <TouchableOpacity
-                        // onPress={applyFilters}
+                        activeOpacity={1}
+                        onPress={onClearFilter}
                         style={[styles.touchableStyles, { backgroundColor: COLORS.primaryRedHex }]}
                     >
                         <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>Clear All</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        // onPress={applyFilters}
+                        activeOpacity={1}
                         style={[styles.touchableStyles, { backgroundColor: COLORS.primaryOrangeHex }]}
+                        onPress={() => {
+                            setOpenPicker(false)
+                            return onCreateZippyAlert()
+                        }}
                     >
-                        <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>Apply Filters</Text>
+                        <Text style={[generalStyles.CardTitle, { color: COLORS.primaryBlackHex }]}>Create Alert</Text>
                     </TouchableOpacity>
                 </View>
 
+
+
             </ScrollView>
-
-
-
-
 
         </RBSheet >
     )

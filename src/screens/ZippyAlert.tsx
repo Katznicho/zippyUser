@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { generalStyles } from './utils/generatStyles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSelector } from 'react-redux'
@@ -8,10 +8,15 @@ import PhoneInput from "react-native-phone-number-input";
 import { COLORS } from '../theme/theme'
 import { ActivityIndicator } from '../components/ActivityIndicator'
 import FilterModal from '../components/Modals/FilterModal'
+import { CREATE_ZIPPY_ALERT, GET_ALL_AMENTITIES, GET_ALL_CATEGORIES, GET_ALL_SERVICES } from './utils/constants/routes'
+import { showMessage } from 'react-native-flash-message'
+import { useNavigation } from '@react-navigation/native'
 
 const ZippyAlert = () => {
 
-    const { user } = useSelector((state: RootState) => state.user);
+    const { user, authToken } = useSelector((state: RootState) => state.user);
+
+    const navigation = useNavigation<any>()
 
     const [fullName, setFullName] = React.useState<any>(`${user?.fname} ${user?.lname}`);
     const [email, setEmail] = React.useState<any>(user?.email);
@@ -78,6 +83,301 @@ const ZippyAlert = () => {
             });
         }
     };
+
+    const [categories, setCategories] = useState<any>([]);
+    const [services, setServices] = useState<any>([]);
+    const [amenities, setAmenities] = useState<any>([]);
+
+
+
+    const [zippyAlert, setZippyAlert] = useState<any>({
+        name: fullName,
+        email: email,
+        phone: `${user.phone}`,
+        contactOptions: selectedContactOptions,
+        amentities: [],
+        services: [],
+        propertyType: "",
+        propertyTypeID: "",
+        minimumPrice: "",
+        maximumPrice: "",
+        selectedBedRoom: "",
+        selectedBathRooms: ""
+    })
+
+
+
+    const onClear = () => {
+        setZippyAlert({
+            name: fullName,
+            email: email,
+            phone: `${user.phone}`,
+            contactOptions: selectedContactOptions,
+            amentities: [],
+            services: [],
+            propertyType: "",
+            propertyTypeID: "",
+            minimumPrice: "",
+            maximumPrice: "",
+            selectedBedRoom: "",
+            selectedBathRooms: ""
+        })
+    }
+
+
+
+    useEffect(() => {
+
+        setLoading(true)
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        }
+
+        fetch(GET_ALL_CATEGORIES, {
+            method: 'GET',
+            headers
+        }).then((res) => res.json()).then((data) => {
+
+            setCategories(data?.data)
+        }).catch((err) => {
+        })
+
+        fetch(GET_ALL_SERVICES, {
+            method: 'GET',
+            headers
+        }).then((res) => res.json()).then((data) => {
+            // console.log(data)
+            setServices(data?.data)
+        }).catch((err) => {
+
+        })
+
+        fetch(GET_ALL_AMENTITIES, {
+            method: 'GET',
+            headers
+        }).then((res) => res.json()).then((data) => {
+            // console.log(data)
+            setAmenities(data?.data)
+        })
+
+        setLoading(false)
+
+    }, [])
+
+
+    const [bedRooms, setBedRooms] = useState([
+        {
+            id: 1,
+            name: "Any"
+
+        },
+        {
+            id: 2,
+            name: "1"
+        }, {
+            id: 3,
+            name: "2"
+        },
+        {
+            id: 4,
+            name: "3"
+        }, {
+            id: 5,
+            name: "4"
+        }, {
+            id: 6,
+            name: "5+"
+        }
+    ])
+
+    const [bathRooms, setBathRooms] = useState([
+        {
+            id: 1,
+            name: "Any"
+        }, {
+            id: 2,
+            name: "1"
+        }, {
+            id: 3,
+            name: "2"
+        }, {
+            id: 4,
+            name: "3"
+        }, {
+            id: 5,
+            name: "4"
+        }, {
+            id: 6,
+            name: "5+"
+        }
+    ])
+
+    const onCreateZippyAlert = () => {
+
+        try {
+            if (
+                zippyAlert.name === "" ||
+                zippyAlert.email === "" ||
+                zippyAlert.phone === ""
+
+
+            ) {
+
+                return showMessage({
+                    message: "All fields are required",
+                    type: "danger",
+                    autoHide: true,
+                    duration: 3000,
+                })
+            }
+            else {
+                setLoading(true)
+                const myHeaders = new Headers();
+                // myHeaders.append("X-Requested-With", "XMLHttpRequest");
+                myHeaders.append("Authorization", `Bearer ${authToken}`);
+
+                const formData = new FormData();
+                formData.append("name", zippyAlert.name);
+                formData.append("email", zippyAlert.email);
+                formData.append("phone", zippyAlert.phone);
+                formData.append("property_type", zippyAlert.propertyType);
+                formData.append("category_id", zippyAlert.propertyTypeID);
+                formData.append("minimum_price", zippyAlert.minimumPrice);
+                formData.append("maximum_price", zippyAlert.maximumPrice);
+
+                //services loop through and also append them as an array
+                zippyAlert?.services?.forEach((service: any) => {
+                    formData.append("services[]", service)
+                })
+
+                //amenities loop through and also append them as an array
+                zippyAlert?.amentities?.forEach((amenity: any) => {
+                    formData.append("amenities[]", amenity)
+                })
+
+                //contact options loop through and also append them as an array
+                // Loop through and append contact options as an array
+                selectedContactOptions?.forEach((option: any) => {
+                    formData.append("contact_options[]", option)
+                })
+                formData.append("number_of_bedrooms", zippyAlert.selectedBedRoom);
+                formData.append("number_bathrooms", zippyAlert.selectedBathRooms);
+
+
+
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: formData,
+                    redirect: "follow"
+                };
+
+                fetch(CREATE_ZIPPY_ALERT, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+
+                        setLoading(false)
+                        if (result?.response === "success") {
+                            showMessage({
+                                message: "Alert created successfully",
+                                description: "Alert created successfully",
+                                type: "success",
+                                autoHide: true,
+                                duration: 3000,
+                            })
+                            return navigation.navigate("ZippyAlertStack")
+                        }
+                        if (result?.alert_max == true) {
+                            showMessage({
+                                message: "Maximum number of alerts reached",
+                                description: "Maximum number of alerts reached",
+                                type: "info",
+                                autoHide: true,
+                                duration: 3000,
+                            })
+                            return navigation.navigate("ZippyAlertStack")
+                        }
+                        if (result?.response === "failure") {
+                            return showMessage({
+                                message: "Failed to create alert",
+                                description: "Failed to create alert",
+                                type: "info",
+                                autoHide: true,
+                                duration: 3000,
+                            })
+
+                        }
+
+                    })
+                    .catch((error) => {
+                        setLoading(false)
+                        return showMessage({
+                            message: "Something went wrong",
+                            description: "Something went wrong",
+                            type: "danger",
+                            autoHide: true,
+                            duration: 3000,
+                        })
+                    });
+
+                // fetch(CREATE_ZIPPY_ALERT, {
+                //     method: 'POST',
+                //     headers,
+                //     body: formData
+                // }).then(response => response.json())
+                //     .then(result => {
+                //         console.log(result)
+                //         setLoading(false)
+                //         if (result?.response === "success") {
+
+
+                //         }
+                //     })
+                //     .catch(error => {
+                //         console.log(error)
+                //     })
+                // .then((res) => res.json()).then((data) => {
+                //     setLoading(false)
+                //     if (data?.response == "success") {
+                // showMessage({
+                //     message: "Alert created successfully",
+                //     description: "Alert created successfully",
+                //     type: "success",
+                //     autoHide: true,
+                //     duration: 3000,
+                // })
+                // return navigation.navigate("ZippyAlertStack")
+                //     }
+                //     else {
+                //         if (data?.alert_max == true) {
+                //             return showMessage({
+                //                 message: "Maximum number of alerts reached",
+                //                 description: "You can only create 5 alerts",
+                //                 type: "info",
+                //                 autoHide: true,
+                //                 duration: 3000,
+                //             })
+                //         }
+                //     }
+                // }).catch((err) => {
+                //     console.log("========================")
+                // })
+            }
+
+        } catch (error) {
+            console.log(error)
+            return showMessage({
+                message: "Something went wrong",
+                type: "danger",
+                autoHide: true,
+                duration: 3000,
+            })
+        }
+    }
+
+
+
 
 
     return (
@@ -204,13 +504,21 @@ const ZippyAlert = () => {
                 </View>
                 {/* create zippy alert */}
 
-                {loading && <ActivityIndicator />}
 
                 {/* filter modal */}
                 <FilterModal
                     openPicker={openPicker}
                     setOpenPicker={setOpenPicker}
                     title={'Zippy Alert'}
+                    categories={categories}
+                    services={services}
+                    amentities={amenities}
+                    zippyAlert={zippyAlert}
+                    setZippyAlert={setZippyAlert}
+                    onClearFilter={onClear}
+                    bedRooms={bedRooms}
+                    bathRooms={bathRooms}
+                    onCreateZippyAlert={onCreateZippyAlert}
                 />
                 {/* filter modal */}
 

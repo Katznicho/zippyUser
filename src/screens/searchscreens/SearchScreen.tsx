@@ -6,7 +6,7 @@ import { generalStyles } from '../utils/generatStyles';
 import EmptyListAnimation from '../../components/EmptyListAnimation';
 import PropertyFlatList from '../../components/PropertyFlatList';
 
-const searchScreen = () => {
+const SearchScreen = () => {
     const { isError, data, error, fetchNextPage, hasNextPage, isFetching } = useFetchInfinite("allProperties", GET_ALL_PROPERTIES_BY_PAGINATION);
 
 
@@ -39,6 +39,6 @@ const searchScreen = () => {
     )
 }
 
-export default searchScreen
+export default SearchScreen
 
 const styles = StyleSheet.create({})

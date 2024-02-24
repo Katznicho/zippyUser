@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
-import {
-  ScrollView,
-} from 'react-native';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import { generalStyles } from './utils/generatStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import Categories from '../components/Categories';
 import PropertyDetailScrollView from '../components/PropertyDetailScrollView';
 import CategoryTypes from '../components/CategoryTypes';
-import HomeSearchBar from '../components/HomeSearchBar';
-import FilterModal from '../components/Modals/FilterModal';
 import ZippyAlertButton from '../components/ZippyAlertButton';
 
 
 const HomeScreen = () => {
 
 
-
   const tabBarHeight = useBottomTabBarHeight();
 
-  const [openPicker, setOpenPicker] = useState<boolean>(false);
+
 
   return (
     <KeyboardAwareScrollView
@@ -36,12 +31,7 @@ const HomeScreen = () => {
         keyboardShouldPersistTaps="always"
         contentContainerStyle={{ paddingBottom: tabBarHeight }}
       >
-        {/* search bar */}
-        <HomeSearchBar
-          openPicker={openPicker}
-          setOpenPicker={setOpenPicker}
-        />
-        {/* search bar */}
+
 
         {/* categories */}
         <Categories />
@@ -74,14 +64,6 @@ const HomeScreen = () => {
         />
         <PropertyDetailScrollView />
         {/* recent */}
-
-        {/* filter modal */}
-        <FilterModal
-          openPicker={openPicker}
-          setOpenPicker={setOpenPicker}
-          title="Filters"
-        />
-        {/* filter modal */}
       </ScrollView>
     </KeyboardAwareScrollView>
   );

@@ -3,6 +3,7 @@ import React from 'react'
 import { generalStyles } from '../utils/generatStyles'
 import { useApi } from '../../hooks/useApi'
 import { COLORS } from '../../theme/theme'
+import { ActivityIndicator } from '../../components/ActivityIndicator'
 
 const Points = () => {
 
@@ -19,6 +20,10 @@ const Points = () => {
         },
     })
 
+    if (isLoading)
+        return <View style={[generalStyles.ScreenContainer]}>
+            <ActivityIndicator />
+        </View>
 
     return (
         <ScrollView
@@ -37,14 +42,19 @@ const Points = () => {
             </View>
 
             {/* points usgae */}
+            <View style={[styles.containerCard]}>
+                <Text style={[generalStyles.CardTitle]}>Points Usage</Text>
+            </View>
             <View>
                 {
                     data?.data?.point_usages.length == 0 ? <View style={[styles.containerCard]}>
                         <Text style={[generalStyles.CardSubtitle]}>No Points Used So Far</Text>
-                    </View> : data?.data?.point_usagesmap((item: any, index: any) => {
+                    </View> : data?.data?.point_usages?.map((item: any, index: any) => {
                         return (
                             <View style={[styles.containerCard]} key={index}>
+                                <Text style={[generalStyles.CardTitle]}>Points</Text>
                                 <Text style={[generalStyles.CardTitle]}>{item?.points}</Text>
+                                <Text style={[generalStyles.CardTitle]}>Reason</Text>
                                 <Text style={[generalStyles.CardSubtitle]}>{item?.reason}</Text>
                             </View>
                         )

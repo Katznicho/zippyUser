@@ -1,18 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react';
+import { StyleSheet } from 'react-native'
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import searchScreen from '../screens/searchscreens/SearchScreen';
 import { generalStyles } from '../screens/utils/generatStyles';
 import { COLORS } from '../theme/theme';
 import ArrowBack from '../components/ArrowBack';
+import HomeSearchBar from '../components/HomeSearchBar';
 
 const Stack = createNativeStackNavigator();
 
 const SearchStack = () => {
+    const [openPicker, setOpenPicker] = useState<boolean>(false);
     return (
-        <Stack.Navigator initialRouteName="Search">
+        <Stack.Navigator initialRouteName="SearchScreen">
             <Stack.Screen
-                name="Search"
+                name="SearchScreen"
                 component={searchScreen}
                 options={{
                     title: 'Search',
@@ -22,7 +24,12 @@ const SearchStack = () => {
                     headerTitleAlign: 'center',
                     headerLeft: () => (
                         <ArrowBack />
-
+                    ),
+                    header: () => (
+                        <HomeSearchBar
+                            openPicker={openPicker}
+                            setOpenPicker={setOpenPicker}
+                        />
                     ),
                 }}
             >

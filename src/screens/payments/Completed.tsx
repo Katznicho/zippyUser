@@ -39,12 +39,6 @@ const Completed = () => {
     };
 
 
-    console.log("====================================")
-    console.log(hasNextPage)
-    console.log("===============================")
-
-
-
 
     return (
         <SafeAreaView style={[generalStyles.ScreenContainer]}>

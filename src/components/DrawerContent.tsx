@@ -18,8 +18,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Share from 'react-native-share';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { logoutUser } from '../redux/store/slices/UserSlice';
+import { logoutUser, showAuthScreen } from '../redux/store/slices/UserSlice';
 import { LOGOUT } from '../screens/utils/constants/routes';
+import Feather from 'react-native-vector-icons/Feather';
 
 
 
@@ -69,6 +70,25 @@ const DrawerContent = (props: any) => {
         } catch (error) {
         }
     };
+
+    const handleShowAlert = () => {
+        Alert.alert(
+            'Login',
+            "You need to login first to see this screen",
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: () => dispatch(showAuthScreen(true)),
+                },
+            ],
+            { cancelable: false },
+        )
+    }
 
 
     const onSignOut = () => {
@@ -139,27 +159,26 @@ const DrawerContent = (props: any) => {
                     inactiveTintColor={COLORS.primaryWhiteHex}
                 />
                 <DrawerItem
-                    label="Properties"
-                    icon={() => <AntDesign
-                        name="creditcard"
+                    label="My Alerts"
+                    icon={() => <Feather
+                        name="alert-circle"
                         size={25}
-                        color={selectedItem === 'Properties' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
+                        color={selectedItem === 'MyAlerts' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
 
                     />}
                     onPress={() => {
-                        setSelectedItem('Properties');
-                        // props.navigation.navigate('HomeDrawer')
-                        // navigation.navigate('Properties');
+                        setSelectedItem('MyAlerts');
+                        return guestUser ? handleShowAlert() : props?.navigation.navigate('ZippyAlertStack');
                     }}
                     style={[{
                         backgroundColor:
-                            selectedItem === 'Properties'
+                            selectedItem === 'MyAlerts'
                                 ? COLORS.primaryOrangeHex
                                 : COLORS.primaryBlackHex,
 
 
                     }, styles.tabStyles]}
-                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Properties' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'MyAlerts' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
                     // active={selectedItem === 'Home'}
                     activeBackgroundColor={COLORS.primaryOrangeHex}
                     activeTintColor={COLORS.primaryWhiteHex}

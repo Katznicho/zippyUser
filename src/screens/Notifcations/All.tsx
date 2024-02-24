@@ -17,9 +17,9 @@ const All = (): JSX.Element => {
 
 
     const { isError, data, error, fetchNextPage, hasNextPage, isFetching } = useFetchInfinite("allnotifications", USERNOTIFICATIONS);
-    // console.log("=========== data=========================")
-    // console.log(data)
-    // console.log("==========data=====================")
+    console.log("=========== data=========================")
+    console.log(data)
+    console.log("==========data=====================")
     //flat the data
     // const flattenedData = data?.pages.flatMap(page => page.results) || [];
     const notificationData = data?.pages.flatMap(page => page.data);
@@ -30,8 +30,6 @@ const All = (): JSX.Element => {
     const loadMoreData = () => {
         if (hasNextPage && !isFetching && data?.pages[0].total !== notificationData?.length) return fetchNextPage()
     };
-
-
 
 
     return (

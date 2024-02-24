@@ -42,6 +42,13 @@ export const GET_ALL_PROPERTIES_BY_PAGINATION = `${BASE_URL}/getAllPropertiesByP
 //property owner
 export const GET_REGISTERED_OWNER_PROPERTY_BY_PAGE = `${BASE_URL}/getRegisterPropertyOfOwnerByPage`;
 
+//zippy alert
+export const CREATE_ZIPPY_ALERT = `${BASE_URL}/createPropertyAlert`
+//https://zippy.risidev.com/api/v1/createPropertyAlert
+export const GET_ALL_ZIPPY_ALERTS = `${BASE_URL}/getUserAlerts`
+export const ACTIVATE_ZIPPY_ALERT = `${BASE_URL}/ActivateAlert`
+export const DEACTIVATE_ZIPPY_ALERT = `${BASE_URL}/deActivateAlert`
+
 
 
 

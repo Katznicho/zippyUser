@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/dev';
 import UpdatePasswordStack from './UpdatePasswordStack';
 import SearchStack from './SearchStack';
+import ZippyAlertStack from './ZippyAlertStack';
 
 
 const Drawer = createDrawerNavigator();
@@ -97,6 +98,11 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="SearchStack"
         component={SearchStack}
+      />
+
+      <Drawer.Screen
+        name="ZippyAlertStack"
+        component={ZippyAlertStack}
       />
 
     </Drawer.Navigator>
