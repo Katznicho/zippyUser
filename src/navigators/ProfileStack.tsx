@@ -11,6 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import SupportScreen from '../screens/ProfileScreens/SupportScreen';
 import EditProfile from '../screens/ProfileScreens/EditProfile';
 import { generalStyles } from '../screens/utils/generatStyles';
+import Points from '../screens/ProfileScreens/Points';
 
 
 
@@ -28,6 +29,20 @@ const ProfileStack = () => {
         component={Profile}
         options={{
           title: 'My Profile',
+          headerStyle: generalStyles.headerStyle,
+          headerTitleStyle: generalStyles.titleHeaderStyles,
+          headerTintColor: COLORS.primaryBlackHex,
+          headerTitleAlign: 'center',
+
+        }}
+      />
+
+      <Stack.Screen
+
+        name="Points"
+        component={Points}
+        options={{
+          title: 'My Points',
           headerStyle: generalStyles.headerStyle,
           headerTitleStyle: generalStyles.titleHeaderStyles,
           headerTintColor: COLORS.primaryBlackHex,

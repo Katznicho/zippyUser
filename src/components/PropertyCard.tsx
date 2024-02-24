@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React from 'react'
 import { generalStyles } from '../screens/utils/generatStyles';
 import { COLORS, FONTSIZE } from '../theme/theme';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,26 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const PropertyCard = ({ property }: any) => {
 
-    const [details, setDetails] = useState(
-        {
-            cover_image: "https://plus.unsplash.com/premium_photo-1673561231809-17f6f9ef09b7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXBhcnRtZW50c3xlbnwwfHwwfHx8MA%3D%3D",
-            name: "Ssanga Apartments",
-            description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur dolore sed nostrum corrupti alias rem, veniam explicabo iure mollitia eveniet!",
-            category: "Apartments",
-            price: "20000",
-            location: "kampala , uganda , ssanga",
-            user: {
-                name: "Ssange",
-                image: "https://images.unsplash.com/photo-1605283176568-9b41fde3672e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXBhcnRtZW50c3xlbnwwfHwwfHx8MA%3D%3D"
-            },
-            number_of_rooms: "2",
-            number_of_baths: "2",
-            rating: 4,
-            latitude: 0.122,
-            longitude: 0.123
 
-        }
-    )
 
     const navigation = useNavigation<any>();
 
@@ -39,25 +20,25 @@ const PropertyCard = ({ property }: any) => {
         <TouchableOpacity
             activeOpacity={1}
             style={[styles.container]}
-            onPress={() => navigation.navigate("PropertyDetails", { item: details })}
+            onPress={() => navigation.navigate("PropertyDetails", { data: property })}
         >
             <Image
-                source={{ uri: details?.cover_image }}
+                source={{ uri: property?.cover_image }}
                 style={styles.imageStyles}
             />
             {/* </View> */}
             <View>
 
                 <View style={[styles.viewStyles]}>
-                    <Text style={[generalStyles.CardTitle]}>{details?.name}</Text>
+                    <Text style={[generalStyles.CardTitle]}>{property?.name}</Text>
 
                 </View>
 
                 <View style={[generalStyles.flexStyles, { alignItems: "center", justifyContent: "space-between", marginHorizontal: 5 }]}>
-                    <Text style={[generalStyles.CardSubtitle]}>{details?.category}</Text>
+                    <Text style={[generalStyles.CardSubtitle]}>{property?.category?.name}</Text>
                     <View style={[generalStyles.flexStyles, { alignItems: "center" }]}>
                         {
-                            Array(details?.rating).fill(0).map((_, index) => (
+                            Array(4).fill(0).map((_, index) => (
                                 <AntDesign
                                     key={index}
                                     name="star"
@@ -71,7 +52,7 @@ const PropertyCard = ({ property }: any) => {
                 </View>
 
                 <View style={[{ marginLeft: 3, marginVertical: 2 }]}>
-                    <Text style={[generalStyles.CardSubtitle]}>{limitDescription(details?.description, 10)}</Text>
+                    <Text style={[generalStyles.CardSubtitle]}>{limitDescription(property?.description, 10)}</Text>
                 </View>
 
                 <View style={[generalStyles.flexStyles, { alignItems: "center" }]}>
@@ -79,7 +60,7 @@ const PropertyCard = ({ property }: any) => {
                         size={20}
                         color={COLORS.primaryOrangeHex}
                     />
-                    <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10 }]}>{details?.location}</Text>
+                    <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10 }]}>{property?.location}</Text>
                 </View>
 
                 <View style={[generalStyles.flexStyles, { alignItems: "center" }]}>
@@ -91,7 +72,7 @@ const PropertyCard = ({ property }: any) => {
 
                         />
 
-                        <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10, marginTop: 5 }]}>{details?.number_of_rooms} rooms</Text>
+                        <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10, marginTop: 5 }]}>{property?.number_of_rooms} rooms</Text>
 
                     </View>
                     <View style={[generalStyles.flexStyles, { alignItems: "center", justifyContent: "center" }]}>
@@ -102,14 +83,16 @@ const PropertyCard = ({ property }: any) => {
                             style={{ marginHorizontal: 5 }}
                         />
 
-                        <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10, marginTop: 5 }]}>{details?.number_of_baths} bathrooms</Text>
+                        <Text style={[generalStyles.CardTitle, { fontSize: FONTSIZE.size_10, marginTop: 5 }]}>{property?.number_of_baths} bathrooms</Text>
 
                     </View>
                 </View>
 
                 <View style={[generalStyles.flexStyles, { alignItems: "center", marginVertical: 5, marginHorizontal: 3 }]}>
-                    <Text style={[generalStyles.CardTitle]}> UGX {details.price}</Text>
-                    <Text style={[generalStyles.CardSubtitle]}>/month</Text>
+                    <Text style={[generalStyles.CardTitle]}> {property?.currency?.name} {property?.price}</Text>
+                    <Text style={[generalStyles.CardSubtitle]}>
+                        {property?.payment_period?.name}
+                    </Text>
                 </View>
 
 

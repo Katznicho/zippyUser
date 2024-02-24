@@ -1,18 +1,14 @@
 import { StyleSheet, SafeAreaView } from 'react-native'
 import React from 'react'
-import useFetchInfinite from '../hooks/useFetchInfinite';
-import { generalStyles } from './utils/generatStyles';
-import EmptyListAnimation from '../components/EmptyListAnimation';
-import PropertyFlatList from '../components/PropertyFlatList';
-import { GET_ALL_PROPERTIES_BY_PAGINATION, } from './utils/constants/routes';
+import useFetchInfinite from '../../hooks/useFetchInfinite';
+import { GET_ALL_PROPERTIES_BY_PAGINATION } from '../utils/constants/routes';
+import { generalStyles } from '../utils/generatStyles';
+import EmptyListAnimation from '../../components/EmptyListAnimation';
+import PropertyFlatList from '../../components/PropertyFlatList';
 
-
-
-
-const AllProperties: React.FC = () => {
-
+const searchScreen = () => {
     const { isError, data, error, fetchNextPage, hasNextPage, isFetching } = useFetchInfinite("allProperties", GET_ALL_PROPERTIES_BY_PAGINATION);
-   
+
 
     //flat the data
     // const flattenedData = data?.pages.flatMap(page => page.results) || [];
@@ -43,6 +39,6 @@ const AllProperties: React.FC = () => {
     )
 }
 
-export default AllProperties
+export default searchScreen
 
 const styles = StyleSheet.create({})

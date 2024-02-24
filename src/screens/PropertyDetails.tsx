@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, Linking } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, Linking, Alert } from 'react-native'
 import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -8,6 +8,9 @@ import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
 import GradientBGIcon from '../components/GradientBGIcon';
 import QRCode from 'react-native-qrcode-svg';
 import { onMakeCall } from './utils/helpers/helpers'
+import { showAuthScreen } from '../redux/store/slices/UserSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../redux/store/dev'
 
 
 
@@ -19,10 +22,9 @@ const StationDetails = () => {
 
     const { data } = useRoute<any>().params;
 
-    const { position } = useGetUserLocation();
+    const { guestUser } = useSelector((state: RootState) => state.user);
 
-
-
+    const dispatch = useDispatch<any>();
 
 
     const openMapsForDirections = () => {
@@ -31,6 +33,25 @@ const StationDetails = () => {
         const url = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
         return Linking.openURL(url);
     };
+
+    const handleShowAlert = () => {
+        Alert.alert(
+            'Login',
+            "You need to login first to continue",
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: () => dispatch(showAuthScreen(true)),
+                },
+            ],
+            { cancelable: false },
+        )
+    }
 
 
 
@@ -113,7 +134,7 @@ const StationDetails = () => {
                                 <TouchableOpacity
                                     activeOpacity={1}
                                     style={[generalStyles.loginContainer, { width: "100%" }]}
-                                    onPress={() => navigation.navigate("BookNow", { data })}
+                                    onPress={() => guestUser ? handleShowAlert() : navigation.navigate("BookNow", { data })}
                                 >
                                     <Text style={generalStyles.loginText}>{'Book Now'}</Text>
                                 </TouchableOpacity>

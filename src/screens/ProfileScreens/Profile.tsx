@@ -1,4 +1,4 @@
-import {  ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import HeadProfileCard from '../../components/HeadProfileCard';
 import ProfileDetailsCard from '../../components/ProfileCardDetails';
@@ -12,14 +12,16 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const Profile = () => {
 
 
-
-
   const [profile_details,] = useState([
+    {
+      name: 'My Points',
+      screen: 'Points',
+    },
     {
       name: 'Edit Profile',
       screen: 'EditProfile',
     },
-    
+
     {
       name: 'Private Policy',
       screen: 'PrivatePolicy',

@@ -9,7 +9,8 @@ import ProfileStack from './ProfileStack';
 import MyNotificationStack from './MyNotificationStack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import HomeStack from './HomeStack';
-import CreateStack from './CreateStack';
+import SearchStack from './SearchStack';
+
 
 
 
@@ -48,41 +49,45 @@ const TabNavigator = () => {
               name="home"
               size={25}
               color={
-                focused ? COLORS.primaryBlackHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
               }
             />
           ),
         }}></Tab.Screen>
 
-      {/* <Tab.Screen
-        name="onBoard"
-        component={CreateStack}
+
+      <Tab.Screen
+        name="SearchTab"
+        component={SearchStack}
         options={{
-          title: 'OnBoard',
+          title: 'Search',
           tabBarIcon: ({ focused, color, size }) => (
-            <AntDesign
-              name="pluscircleo"
+            <CustomIcon
+              name="search"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
               }
             />
           ),
-        }}></Tab.Screen> */}
-      {/* <Tab.Screen
+        }}></Tab.Screen>
+
+
+      <Tab.Screen
         name="Notification"
         component={MyNotificationStack}
         options={{
+          title: 'Notifications',
           tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="bell"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryOrangeHex : COLORS.secondaryGreyHex
               }
             />
           ),
-        }}></Tab.Screen> */}
+        }}></Tab.Screen>
 
 
       <Tab.Screen
@@ -94,7 +99,7 @@ const TabNavigator = () => {
               name="user"
               size={25}
               color={
-                focused ? COLORS.primaryBlackHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
               }
             />
           ),

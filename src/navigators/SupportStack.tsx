@@ -5,11 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import PrivatePolicy from '../screens/ProfileScreens/PrivatePolicy';
 import AboutUs from '../screens/ProfileScreens/AboutUs';
 import { COLORS } from '../theme/theme';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import SupportScreen from '../screens/ProfileScreens/SupportScreen';
 import EditProfile from '../screens/ProfileScreens/EditProfile';
 import { generalStyles } from '../screens/utils/generatStyles';
+import ArrowBack from '../components/ArrowBack';
 
 
 
@@ -44,16 +43,7 @@ const SupportStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Home')}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
 
                     ),
                 }}
@@ -68,16 +58,7 @@ const SupportStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Home')}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
                     ),
                 }}
             />
@@ -92,16 +73,7 @@ const SupportStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Home')}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
                     ),
                 }}
             />
@@ -116,16 +88,7 @@ const SupportStack = () => {
                     headerTintColor: COLORS.primaryBlackHex,
                     headerTitleAlign: 'center',
                     headerLeft: () => (
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Home')}
-                            style={{ marginLeft: 10 }}
-                        >
-                            <Entypo
-                                name="chevron-left"
-                                color={COLORS.primaryBlackHex}
-                                size={28}
-                            />
-                        </TouchableOpacity>
+                        <ArrowBack />
                     ),
                 }}
             />

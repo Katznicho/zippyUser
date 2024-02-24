@@ -9,7 +9,7 @@ import { showAuthScreen } from '../redux/store/slices/UserSlice'
 const ZippyAlertButton = () => {
     const navigation = useNavigation<any>()
 
-    const { user, authToken, guestUser } = useSelector((state: RootState) => state.user);
+    const { guestUser } = useSelector((state: RootState) => state.user);
 
     const dispatch = useDispatch<any>()
 

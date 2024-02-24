@@ -18,7 +18,10 @@ const PropertyFlatList: React.FC<any> = ({ propertyData, loadMoreData, isFetchin
             showsVerticalScrollIndicator={false}
             keyExtractor={item => String(item?.id)}
             renderItem={({ item, index }) => (
-                <PropertyCard item={item} index={index} />
+                <PropertyCard
+                    property={item}
+                    index={index}
+                />
             )}
             onEndReached={() => {
                 loadMoreData()

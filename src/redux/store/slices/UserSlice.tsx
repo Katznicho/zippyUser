@@ -17,6 +17,7 @@ interface User {
   role: string,
   // is_new_user: boolean,
   displayPicture: string;
+  pooints: string | number
   // guestUser: boolean
 }
 
@@ -31,6 +32,7 @@ const initialState: UserState = {
     displayPicture: '',
     role: "",
     phone: "",
+    pooints: 0
     // is_new_user: true,
 
   },
@@ -59,7 +61,8 @@ export const userSlice = createSlice({
         email: '',
         displayPicture: '',
         role: "",
-        phone: ""
+        phone: "",
+        pooints: 0
       }
     },
 

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
 } from 'react-native';
@@ -79,6 +79,7 @@ const HomeScreen = () => {
         <FilterModal
           openPicker={openPicker}
           setOpenPicker={setOpenPicker}
+          title="Filters"
         />
         {/* filter modal */}
       </ScrollView>

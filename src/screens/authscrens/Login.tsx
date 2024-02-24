@@ -138,8 +138,8 @@ const Login = () => {
                   email: result?.user?.email,
                   phone: result?.user?.phone_number,
                   displayPicture: result?.user?.avatar,
-                  is_new_user: result?.user.is_new_user,
-                  role: result?.user.role
+                  role: result?.user.role,
+                  pooints: result?.user?.points
                 },
                 authToken: result?.authToken,
               }),

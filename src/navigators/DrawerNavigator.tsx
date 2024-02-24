@@ -10,6 +10,7 @@ import AboutUsStack from './AboutUsStack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/dev';
 import UpdatePasswordStack from './UpdatePasswordStack';
+import SearchStack from './SearchStack';
 
 
 const Drawer = createDrawerNavigator();
@@ -55,7 +56,7 @@ const DrawerNavigator = () => {
 
     >
       <Drawer.Screen name="Home"
-        component={user.is_new_user ? UpdatePasswordStack : TabNavigator}
+        component={TabNavigator}
 
         options={{
           drawerIcon: ({ focused, color, size }) => (
@@ -92,7 +93,12 @@ const DrawerNavigator = () => {
         name="AboutUs"
         component={AboutUsStack}
       />
-      
+
+      <Drawer.Screen
+        name="SearchStack"
+        component={SearchStack}
+      />
+
     </Drawer.Navigator>
   )
 }
