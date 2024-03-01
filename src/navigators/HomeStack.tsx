@@ -34,32 +34,9 @@ const HomeStack = () => {
             <Stack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
-                // options={{
-                //     title: 'Zippy Agent',
-                //     animation: 'slide_from_bottom',
-                //     headerShown: true,
-                //     headerStyle: generalStyles.headerStyle,
-                //     headerTitleStyle: generalStyles.titleHeaderStyles,
-                //     headerTintColor: COLORS.primaryBlackHex,
-                //     headerTitleAlign: 'center',
-                //     headerLeft: () => <AntDesign
-                //         name="menu-fold"
-                //         color={COLORS.primaryBlackHex}
-                //         size={25}
-                //         onPress={() => {
-                //             // navigation.goBack();
-                //             navigation.toggleDrawer()
-                //         }}
-                //     />
-                // }}
-
                 options={{
                     animation: 'slide_from_bottom',
                     headerShown: false
-                    // header: () => <HeaderBar
-                    //     title={`${user?.fname} ${user?.lname}`}
-
-                    // />
                 }}
             >
 
@@ -145,12 +122,7 @@ const HomeStack = () => {
                 component={AllProperties}
                 options={{
                     animation: 'slide_from_bottom',
-                    title: 'Properties',
-                    headerStyle: generalStyles.headerStyle,
-                    headerTitleStyle: generalStyles.titleHeaderStyles,
-                    headerTintColor: COLORS.primaryBlackHex,
-                    headerTitleAlign: 'center',
-                    headerLeft: () => <ArrowBack />
+                    headerShown: false
                 }}>
             </Stack.Screen>
             {/* all transactions */}

@@ -14,6 +14,7 @@ import SearchStack from './SearchStack';
 
 
 
+
 const Tab = createBottomTabNavigator();
 
 
@@ -62,8 +63,8 @@ const TabNavigator = () => {
         options={{
           title: 'Search',
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="search"
+            <AntDesign
+              name="search1"
               size={25}
               color={
                 focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex

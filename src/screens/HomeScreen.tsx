@@ -11,10 +11,7 @@ import ZippyAlertButton from '../components/ZippyAlertButton';
 
 const HomeScreen = () => {
 
-
   const tabBarHeight = useBottomTabBarHeight();
-
-
 
   return (
     <KeyboardAwareScrollView

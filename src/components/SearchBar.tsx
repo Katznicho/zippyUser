@@ -1,17 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native'
+import React from 'react'
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
-import CustomIcon from './CustomIcon';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { generalStyles } from '../screens/utils/generatStyles';
+import CustomIcon from './CustomIcon';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
-const HomeSearchBar = ({ openPicker, setOpenPicker }: any) => {
 
-    const [searchText, setSearchText] = useState('');
+const SearchBar = ({ placeholder = "Search for properties", searchText, setSearchText, resetSearch }: any) => {
 
-    const resetSearchCoffee = () => {
-        setSearchText('');
-    };
+
 
     return (
         <View style={[generalStyles.flexStyles, { alignItems: 'center', justifyContent: 'space-between', }]}>
@@ -21,11 +18,12 @@ const HomeSearchBar = ({ openPicker, setOpenPicker }: any) => {
                 <TouchableOpacity
                     onPress={() => {
                         // searchCoffee(searchText);
+                        setSearchText();
                     }}>
-                    <CustomIcon
+                    <EvilIcons
                         style={styles.InputIcon}
                         name="search"
-                        size={FONTSIZE.size_18}
+                        size={FONTSIZE.size_28}
                         color={
                             searchText.length > 0
                                 ? COLORS.primaryOrangeHex
@@ -34,11 +32,10 @@ const HomeSearchBar = ({ openPicker, setOpenPicker }: any) => {
                     />
                 </TouchableOpacity>
                 <TextInput
-                    placeholder="Find Your Dream Hzouse..."
+                    placeholder={placeholder}
                     value={searchText}
                     onChangeText={text => {
-                        setSearchText(text);
-                        // searchCoffee(text);
+                        return setSearchText(text);
                     }}
                     placeholderTextColor={COLORS.primaryLightGreyHex}
                     style={styles.TextInputContainer}
@@ -46,7 +43,7 @@ const HomeSearchBar = ({ openPicker, setOpenPicker }: any) => {
                 {searchText.length > 0 ? (
                     <TouchableOpacity
                         onPress={() => {
-                            resetSearchCoffee();
+                            return resetSearch();
                         }}>
                         <CustomIcon
                             style={styles.InputIcon}
@@ -65,7 +62,7 @@ const HomeSearchBar = ({ openPicker, setOpenPicker }: any) => {
     )
 }
 
-export default HomeSearchBar
+export default SearchBar
 
 const styles = StyleSheet.create({
 
@@ -73,17 +70,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginVertical: SPACING.space_10,
         marginHorizontal: SPACING.space_10,
-        borderRadius: BORDERRADIUS.radius_25,
+        borderRadius: 30,
         backgroundColor: COLORS.primaryBlackHex,
         alignItems: 'center',
-        flex: 0.9
+        flex: 1,
+        elevation: 5
     },
     InputIcon: {
         marginHorizontal: SPACING.space_10,
     },
     TextInputContainer: {
-        flex: 0.9,
-        height: SPACING.space_20 * 3,
+        flex: 1,
+        height: SPACING.space_20 * 2.7,
         fontFamily: FONTFAMILY.poppins_medium,
         fontSize: FONTSIZE.size_14,
         color: COLORS.primaryWhiteHex,

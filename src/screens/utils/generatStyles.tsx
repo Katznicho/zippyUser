@@ -104,8 +104,10 @@ export const generalStyles = StyleSheet.create({
     color: COLORS.primaryBlackHex,
     fontFamily: FONTFAMILY.poppins_light,
     // fontFamily: FONTFAMILY.poppins_medium,
-
-
+  },
+  viewStyles: {
+    marginHorizontal: 20,
+    marginVertical: 10
   },
 
   formInput: {
