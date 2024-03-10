@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, Linking, Alert } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import useGetUserLocation from '../hooks/useGetUserLocation'
@@ -11,6 +11,7 @@ import { onMakeCall } from './utils/helpers/helpers'
 import { showAuthScreen } from '../redux/store/slices/UserSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store/dev'
+import { showMessage } from 'react-native-flash-message'
 
 
 
@@ -25,6 +26,8 @@ const StationDetails = () => {
     const { guestUser } = useSelector((state: RootState) => state.user);
 
     const dispatch = useDispatch<any>();
+
+    const [loading, setLoading] = useState<boolean>(false);
 
 
     const openMapsForDirections = () => {
@@ -51,6 +54,24 @@ const StationDetails = () => {
             ],
             { cancelable: false },
         )
+    }
+
+    const handleBookNow = () => {
+        if (guestUser) {
+            handleShowAlert()
+        } else {
+            // navigation.navigate('BookNow', { data: data })
+            setLoading(true)
+            showMessage({
+                message: "Booked Successfully",
+                description: "We will get back to you soon",
+                type: "success",
+                color: "success",
+                icon: "success",
+            });
+            setLoading(false)
+            return navigation.goBack();
+        }
     }
 
 
@@ -134,7 +155,7 @@ const StationDetails = () => {
                                 <TouchableOpacity
                                     activeOpacity={1}
                                     style={[generalStyles.loginContainer, { width: "100%" }]}
-                                    onPress={() => guestUser ? handleShowAlert() : navigation.navigate("BookNow", { data })}
+                                    onPress={() => handleBookNow()}
                                 >
                                     <Text style={generalStyles.loginText}>{'Book Now'}</Text>
                                 </TouchableOpacity>

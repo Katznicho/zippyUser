@@ -8,54 +8,62 @@ import { UPDATE_USER_LOCATION } from '../screens/utils/constants/routes';
 
 
 const useGetUserLocation = () => {
-
-    const { authToken } = useSelector((state: RootState) => state.user);
-
-
-    const [position, setPosition] = React.useState<any>(null)
+    const { authToken, guestUser } = useSelector((state: RootState) => state.user);
+    const [position, setPosition] = React.useState<any>(null);
 
     const getCurrentPosition = () => {
         Geolocation.getCurrentPosition(
             (pos: { coords: { latitude: any; longitude: any; }; }) => {
-
                 const { latitude, longitude } = pos.coords;
+                setPosition({ latitude, longitude });
+
+                // Update user location
                 const headers = new Headers();
                 headers.append('Accept', 'application/json');
                 headers.append('Authorization', `Bearer ${authToken}`);
                 const body = new FormData();
                 body.append('lat', latitude);
                 body.append('long', longitude);
-                fetch(`${UPDATE_USER_LOCATION}`, {
-                    method: 'POST',
-                    headers,
-                    body,
-                }).then((response) => response.json())
-                    .then((result) => {
 
+                if (!guestUser) {
+                    fetch(`${UPDATE_USER_LOCATION}`, {
+                        method: 'POST',
+                        headers,
+                        body,
                     })
-                    .catch((error) => {
-                        console.log("=======error=====================")
-                        console.log(error)
-                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update position');
+                            }
+                            return response.json();
+                        })
+                        .then((result) => {
 
-                setPosition({ latitude, longitude });
+                        })
+                        .catch((error) => {
+
+                            console.error('Error updating position:', error);
+                        });
+
+                }
+
             },
-            (error: any) => Alert.alert('GetCurrentPosition Error', JSON.stringify(error)),
-            { enableHighAccuracy: true, }
+            (error: any) => {
+                console.error("Error getting current position:", error);
+                console.log("Error getting current position:", error);
+            },
+            { enableHighAccuracy: true }
         );
     };
 
     React.useEffect(() => {
         getCurrentPosition();
-        return () => {
-
-        }
-    }, [])
+    }, []);
 
     return {
         position
-    }
-}
+    };
+};
 
 export default useGetUserLocation
 

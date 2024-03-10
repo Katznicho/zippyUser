@@ -154,7 +154,6 @@ const MoreDetails = ({ property, setProperty, propertyStatus, furnishingStatus, 
 
                         />
 
-
                     </View>
 
                     <View>

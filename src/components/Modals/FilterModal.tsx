@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView as RNScrollView, TextInput } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLORS, FONTFAMILY } from '../../theme/theme';
 import { generalStyles } from '../../screens/utils/generatStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Checkbox } from 'react-native-ui-lib';
-import { showMessage } from 'react-native-flash-message';
 import { RootState } from '../../redux/store/dev';
 import { useSelector } from 'react-redux';
-import { CREATE_ZIPPY_ALERT } from '../../screens/utils/constants/routes';
 import { ActivityIndicator } from '../ActivityIndicator';
 import { useNavigation } from '@react-navigation/native';
+import AddLocation from '../AddLocation';
+import { ScrollView } from 'react-native-virtualized-view';
 
 type Props = {
     openPicker: boolean;
@@ -43,105 +43,16 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
     const [loading, setLoading] = useState<boolean>(false)
     const navigation = useNavigation<any>()
 
+    const [openUserLocation, setOpenUserLocation] = useState<boolean>(false)
 
 
-    // const onCreateZippyAlert = () => {
-    //     console.log("=======================", zippyAlert)
-    //     try {
-    //         if (
-    //             zippyAlert.name === "" ||
-    //             zippyAlert.email === "" ||
-    //             zippyAlert.phone === "" ||
-    //             zippyAlert.contactOptions.length === 0 ||
-    //             zippyAlert.amentities.length === 0 ||
-    //             zippyAlert.services.length === 0 ||
-    //             zippyAlert.propertyType === "" ||
-    //             zippyAlert.minimumPrice === "" ||
-    //             zippyAlert.maximumPrice === ""
 
-    //         ) {
 
-    //             return showMessage({
-    //                 message: "All fields are required",
-    //                 type: "danger",
-    //                 autoHide: true,
-    //                 duration: 3000,
-    //             })
-    //         }
-    //         else {
-    //             setLoading(true)
-    //             const headers = {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${authToken}`
-    //             }
-
-    //             const formData = new FormData();
-    //             formData.append("name", zippyAlert.name);
-    //             formData.append("email", zippyAlert.email);
-    //             formData.append("phone", zippyAlert.phone);
-    //             formData.append("property_type", zippyAlert.propertyType);
-    //             formData.append("category_id", zippyAlert.propertyTypeID);
-    //             formData.append("minimum_price", zippyAlert.minimumPrice);
-    //             formData.append("maximum_price", zippyAlert.maximumPrice);
-
-    //             //services loop through and also append them as an array
-    //             zippyAlert?.services?.forEach((service: any) => {
-    //                 formData.append("services[]", service)
-    //             })
-
-    //             //amenities loop through and also append them as an array
-    //             zippyAlert?.amenities?.forEach((amenity: any) => {
-    //                 formData.append("amenities[]", amenity)
-    //             })
-
-    //             //contact options loop through and also append them as an array
-    //             // Loop through and append contact options as an array
-    //             zippyAlert?.contactOptions?.forEach((option: any) => {
-    //                 formData.append("contact_options[]", option)
-    //             })
-
-    //             fetch(CREATE_ZIPPY_ALERT, {
-    //                 method: 'POST',
-    //                 headers,
-    //                 body: formData
-    //             }).then((res) => res.json()).then((data) => {
-    //                 setLoading(false)
-    //                 if (data?.response == "success") {
-    //                     showMessage({
-    //                         message: "Alert created successfully",
-    //                         description: "Alert created successfully",
-    //                         type: "success",
-    //                         autoHide: true,
-    //                         duration: 3000,
-    //                     })
-    //                     return navigation.navigate("ZippyAlertStack")
-    //                 }
-    //                 else {
-    //                     if (data?.alert_max == true) {
-    //                         return showMessage({
-    //                             message: "Maximum number of alerts reached",
-    //                             description: "You can only create 5 alerts",
-    //                             type: "info",
-    //                             autoHide: true,
-    //                             duration: 3000,
-    //                         })
-    //                     }
-    //                 }
-    //             }).catch((err) => {
-
-    //             })
-    //         }
-
-    //     } catch (error) {
-    //         console.log(error)
-    //         return showMessage({
-    //             message: "Something went wrong",
-    //             type: "danger",
-    //             autoHide: true,
-    //             duration: 3000,
-    //         })
-    //     }
-    // }
+    const handlePriceChange = (value: string) => {
+        // Update state with formatted value without symb
+        console.log(value)
+        setZippyAlert((prev: any) => ({ ...prev, cost: value, minimumPrice: value.replace(/[^0-9]/g, '') }));
+    };
 
 
 
@@ -179,12 +90,12 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => setOpenPicker(false)}
-                    style={[generalStyles.centerContent, { position: 'absolute', top: 10, right: 10 }]}
+                    style={[generalStyles.centerContent, { position: 'absolute', top: 10, right: 10, backgroundColor: COLORS.primaryOrangeHex, padding: 10, borderRadius: 20 }]}
                 >
                     <AntDesign
                         name="close"
                         size={25}
-                        color={COLORS.primaryRedHex}
+                        color={COLORS.primaryBlackHex}
                         onPress={() => setOpenPicker(false)}
                     />
 
@@ -208,7 +119,7 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                             Select your desired property type
                         </Text>
                     </View>
-                    <ScrollView
+                    <RNScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
@@ -227,7 +138,7 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                 </TouchableOpacity>
                             ))
                         }
-                    </ScrollView>
+                    </RNScrollView>
                 </View>
                 {/* property categories */}
 
@@ -238,20 +149,20 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
 
                 <View style={[styles.viewStyles]}>
                     <View>
-                        <Text style={generalStyles.CardTitle}>Price Ranges</Text>
+                        <Text style={generalStyles.CardTitle}>Estimated Price</Text>
                     </View>
                     <View>
                         <Text style={generalStyles.CardSubtitle}>
-                            Select your price range
+                            Enter your desired price
                         </Text>
                     </View>
                     {/* price ranges */}
-                    <View style={[generalStyles.flexStyles, { alignItems: 'center', justifyContent: 'center' }]}>
+                    <View>
 
                         <View style={styles.formContainer}>
                             <View>
                                 <Text style={[generalStyles.formInputTextStyle, styles.labelStyles]}>
-                                    Minimum Price*</Text>
+                                    Estimated Cost *</Text>
 
                             </View>
                             <View>
@@ -259,10 +170,8 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                     style={[generalStyles.formInput, styles.borderStyles]}
                                     placeholderTextColor={COLORS.primaryWhiteHex}
                                     keyboardType="number-pad"
-                                    placeholder={'enter minimum price'}
-                                    onChangeText={text => setZippyAlert((prev: any) => {
-                                        return { ...prev, minimumPrice: text }
-                                    })}
+                                    placeholder={'enter estimated price'}
+                                    onChangeText={handlePriceChange}
                                     value={zippyAlert?.minimumPrice}
                                     underlineColorAndroid="transparent"
                                     autoCapitalize="none"
@@ -275,34 +184,34 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                         </View>
 
 
-                        <View style={styles.formContainer}>
-                            <View>
-                                <Text style={[generalStyles.formInputTextStyle, styles.labelStyles]}>
-                                    Maximum Price*</Text>
-                            </View>
-                            <View>
-                                <TextInput
-                                    style={[generalStyles.formInput, styles.borderStyles]}
-                                    placeholderTextColor={COLORS.primaryWhiteHex}
-                                    keyboardType="number-pad"
-                                    placeholder={'enter maximum price'}
-                                    onChangeText={text => setZippyAlert((prev: any) => {
-                                        return { ...prev, maximumPrice: text }
-                                    })}
-                                    value={zippyAlert?.maximumPrice}
-                                    underlineColorAndroid="transparent"
-                                    autoCapitalize="none"
-
-                                />
-                            </View>
-
-
-                        </View>
-
                     </View>
                     {/* price ranges */}
                 </View>
                 {/* price range */}
+                <View style={[styles.hairLineStyles]} />
+
+                {/* location details */}
+                <View style={[styles.viewStyles]}>
+                    <View>
+                        <Text style={generalStyles.CardTitle}>Location Details</Text>
+                    </View>
+                    <View>
+                        <Text style={generalStyles.CardSubtitle}>
+                            Enter your desired location
+                        </Text>
+                    </View>
+                    {/* price ranges */}
+                    <View>
+                        {/* location */}
+                        <AddLocation
+                            property={zippyAlert}
+                            setProperty={(property: any) => setZippyAlert({ ...zippyAlert, ...property })}
+                        />
+                        {/* location */}
+                    </View>
+                    {/* price ranges */}
+                </View>
+                {/* location details */}
                 <View style={[styles.hairLineStyles]} />
 
                 {/* bedrooms */}
@@ -315,7 +224,7 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                             Select your desired bedrooms
                         </Text>
                     </View>
-                    <ScrollView
+                    <RNScrollView
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         horizontal
@@ -334,13 +243,13 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                 </TouchableOpacity>
                             ))
                         }
-                    </ScrollView>
+                    </RNScrollView>
                     <View>
                         <Text style={generalStyles.CardSubtitle}>
                             Select your desired bathrooms
                         </Text>
                     </View>
-                    <ScrollView
+                    <RNScrollView
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         horizontal
@@ -359,7 +268,7 @@ const FilterModal: React.FC<Props> = ({ openPicker, setOpenPicker, title = "Filt
                                 </TouchableOpacity>
                             ))
                         }
-                    </ScrollView>
+                    </RNScrollView>
                 </View>
                 {/* bedroooms */}
 
@@ -553,11 +462,12 @@ const styles = StyleSheet.create({
         borderColor: COLORS.primaryLightGreyHex,
         borderRadius: 10,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        width: "100%"
     },
     formContainer: {
         marginVertical: 10,
-        marginHorizontal: 15
+        marginHorizontal: 0
     },
     labelStyles: {
         color: COLORS.primaryWhiteHex,
