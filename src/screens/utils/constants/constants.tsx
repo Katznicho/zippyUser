@@ -17,6 +17,9 @@ androidHeight += androidNotch;
 export const HEADERHEIGHT = Platform.OS === "ios" ? iosHeight : androidHeight;
 
 
+export const BOTTOM_NOTCH = 10;
+
+
 export const APP_GENDER = {
     MALE: 'Male',
     FEMALE: "Female"

@@ -1,4 +1,4 @@
-export const BASE_URL = "https://zippy.risidev.com/api/v1";
+export const BASE_URL = "https://dashboard.zippyug.com/api/v1";
 
 export const LOGIN = `${BASE_URL}/auth/login`;
 export const REGISTER = `${BASE_URL}/auth/registerCommunity`;

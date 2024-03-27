@@ -7,11 +7,12 @@ import Categories from '../components/Categories';
 import PropertyDetailScrollView from '../components/PropertyDetailScrollView';
 import CategoryTypes from '../components/CategoryTypes';
 import ZippyAlertButton from '../components/ZippyAlertButton';
+import { BOTTOM_NOTCH } from './utils/constants/constants';
 
 
 const HomeScreen = () => {
 
-  const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = useBottomTabBarHeight() + BOTTOM_NOTCH;
 
   return (
     <KeyboardAwareScrollView

@@ -32,14 +32,18 @@ const TabNavigator = () => {
         tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: COLORS.primaryBlackHex,
+        tabBarActiveTintColor: COLORS.primaryOrangeHex,
         tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
-        tabBarLabelStyle: styles.tabBarLabelStyle,
         tabBarStyle: styles.tabBarStyle,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          paddingBottom: 5
+        }
 
-
-      }}
+      }
+      }
     >
+
       <Tab.Screen
         name="HomeTab"
         component={HomeStack}
@@ -50,7 +54,7 @@ const TabNavigator = () => {
               name="home"
               size={25}
               color={
-                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
+                focused ? COLORS.primaryOrangeHex : COLORS.secondaryGreyHex
               }
             />
           ),
@@ -67,28 +71,34 @@ const TabNavigator = () => {
               name="search1"
               size={25}
               color={
-                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
-              }
-            />
-          ),
-        }}></Tab.Screen>
-
-
-      <Tab.Screen
-        name="Notification"
-        component={MyNotificationStack}
-        options={{
-          title: 'Notifications',
-          tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="bell"
-              size={25}
-              color={
                 focused ? COLORS.primaryOrangeHex : COLORS.secondaryGreyHex
               }
             />
           ),
         }}></Tab.Screen>
+
+
+      {
+        isLoggedIn && (
+          <Tab.Screen
+            name="Notification"
+            component={MyNotificationStack}
+            options={{
+              title: 'Notifications',
+              tabBarIcon: ({ focused, color, size }) => (
+                <CustomIcon
+                  name="bell"
+                  size={25}
+                  color={
+                    focused ? COLORS.primaryOrangeHex : COLORS.secondaryGreyHex
+                  }
+                />
+              ),
+            }}></Tab.Screen>
+        )
+      }
+
+
 
 
       <Tab.Screen
@@ -100,7 +110,7 @@ const TabNavigator = () => {
               name="user"
               size={25}
               color={
-                focused ? COLORS.primaryBlackHex : COLORS.secondaryGreyHex
+                focused ? COLORS.primaryOrangeHex : COLORS.secondaryGreyHex
               }
             />
           ),
@@ -114,21 +124,15 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     height: 60,
-    // position: 'absolute',
-    backgroundColor: COLORS.primaryOrangeHex,
+    position: 'absolute',
+    backgroundColor: COLORS.primaryLightWhiteGrey,
     borderTopWidth: 0,
-    elevation: 0,
-    // borderRadius: 25,
-    // marginHorizontal: 10,
-    // marginBottom: 10,
-    padding: 5
+    elevation: 10,
+    borderTopColor: 'transparent',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    borderRadius: 20
   },
-  tabBarLabelStyle: {
-    fontSize: 12,
-    fontFamily: FONTFAMILY.poppins_semibold,
-    marginBottom: 5
-  }
 
 });
-
 export default TabNavigator;

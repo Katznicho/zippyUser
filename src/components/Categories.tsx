@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import React from 'react'
 import { generalStyles } from '../screens/utils/generatStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -21,6 +21,7 @@ const Categories = () => {
             refetchOnMount: true,
         },
     })
+    //https://zippyug.com/api/v1/getAllCategories
 
 
     return (

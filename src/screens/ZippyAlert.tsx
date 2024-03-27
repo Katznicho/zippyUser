@@ -13,12 +13,13 @@ import { Checkbox } from 'react-native-ui-lib';
 import UserLocation from '../components/Modals/UserLocation';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { ActivityIndicator } from '../components/ActivityIndicator';
+import { BOTTOM_NOTCH } from './utils/constants/constants';
 // import { ScrollView } from 'react-native-virtualized-view';
 
 const ZippyAlert = () => {
 
     const { user, authToken } = useSelector((state: RootState) => state.user);
-    const tabBarHeight = useBottomTabBarHeight();
+    const tabBarHeight = useBottomTabBarHeight() + BOTTOM_NOTCH * 2;
 
     const navigation = useNavigation<any>()
 
@@ -356,7 +357,7 @@ const ZippyAlert = () => {
     return (<ScrollView
         contentContainerStyle={{
             margin: 20,
-            paddingBottom: tabBarHeight
+            paddingBottom: 100
 
         }}
         style={[{ flex: 1, width: '100%' }, generalStyles.ScreenContainer]}
@@ -375,7 +376,7 @@ const ZippyAlert = () => {
         {/* chose how you want to be contacted */}
         {/* alert area */}
         {/* property categories */}
-        <View style={[styles.viewStyles]}>
+        <View>
             <View>
                 <Text style={generalStyles.CardTitle}>Property Type</Text>
             </View>
@@ -412,15 +413,8 @@ const ZippyAlert = () => {
 
         {/* price range */}
 
-        <View style={[styles.viewStyles]}>
-            <View>
-                <Text style={generalStyles.CardTitle}>Estimated Price</Text>
-            </View>
-            <View>
-                <Text style={generalStyles.CardSubtitle}>
-                    Enter your desired price
-                </Text>
-            </View>
+        <View >
+
             {/* price ranges */}
             <View>
 
@@ -457,7 +451,7 @@ const ZippyAlert = () => {
 
 
         {/* bedrooms */}
-        <View style={[styles.viewStyles]}>
+        <View>
             <View>
                 <Text style={generalStyles.CardTitle}>BedRooms and Bathrooms</Text>
             </View>
@@ -516,7 +510,7 @@ const ZippyAlert = () => {
         <View style={[styles.hairLineStyles]} />
 
         {/* property amentities */}
-        <View style={[styles.viewStyles]}>
+        <View>
             <View>
                 <Text style={generalStyles.CardTitle}>Property Amentities</Text>
             </View>
@@ -529,36 +523,40 @@ const ZippyAlert = () => {
                 {
                     amenities?.map((item: any) => {
                         return (
-                            <Checkbox
+                            <View
                                 key={item.id}
-                                label={item.name}
-                                value={zippyAlert.amentities?.includes(item.id)}
-                                color={COLORS.primaryOrangeHex}
-                                containerStyle={styles.viewStyles}
-                                onValueChange={(isChecked: boolean) => {
-                                    // Check if the amenity ID is already in the array
-                                    const isAmenityInArray = zippyAlert?.amentities?.includes(item.id);
+                                style={{ marginVertical: 5 }}
+                            >
+                                <Checkbox
 
-                                    // Create a new array based on the checkbox state
-                                    let updatedAmenities: any[];
+                                    label={item.name}
+                                    value={zippyAlert.amentities?.includes(item.id)}
+                                    color={COLORS.primaryOrangeHex}
+                                    onValueChange={(isChecked: boolean) => {
+                                        // Check if the amenity ID is already in the array
+                                        const isAmenityInArray = zippyAlert?.amentities?.includes(item.id);
 
-                                    if (isChecked && !isAmenityInArray) {
-                                        // Add the amenity ID to the array if the checkbox is checked and the ID is not present
-                                        updatedAmenities = [...(zippyAlert?.amentities || []), item.id];
-                                    } else if (!isChecked && isAmenityInArray) {
-                                        // Remove the amenity ID from the array if the checkbox is unchecked and the ID is present
-                                        updatedAmenities = (zippyAlert?.amenities || []).filter((id: string) => id !== item.id);
-                                    } else {
-                                        // No change needed if the checkbox state and array state are consistent
-                                        updatedAmenities = zippyAlert?.amentities;
-                                    }
+                                        // Create a new array based on the checkbox state
+                                        let updatedAmenities: any[];
 
-                                    // Update the state
-                                    setZippyAlert((prev: any) => {
-                                        return { ...prev, amentities: updatedAmenities };
-                                    });
-                                }}
-                            />
+                                        if (isChecked && !isAmenityInArray) {
+                                            // Add the amenity ID to the array if the checkbox is checked and the ID is not present
+                                            updatedAmenities = [...(zippyAlert?.amentities || []), item.id];
+                                        } else if (!isChecked && isAmenityInArray) {
+                                            // Remove the amenity ID from the array if the checkbox is unchecked and the ID is present
+                                            updatedAmenities = (zippyAlert?.amenities || []).filter((id: string) => id !== item.id);
+                                        } else {
+                                            // No change needed if the checkbox state and array state are consistent
+                                            updatedAmenities = zippyAlert?.amentities;
+                                        }
+
+                                        // Update the state
+                                        setZippyAlert((prev: any) => {
+                                            return { ...prev, amentities: updatedAmenities };
+                                        });
+                                    }}
+                                />
+                            </View>
                         );
                     })
 
@@ -570,7 +568,7 @@ const ZippyAlert = () => {
         <View style={[styles.hairLineStyles]} />
 
         {/* property services */}
-        <View style={[styles.viewStyles]}>
+        <View>
             <View>
                 <Text style={generalStyles.CardTitle}>Property Services</Text>
             </View>
@@ -583,36 +581,40 @@ const ZippyAlert = () => {
                 {
                     services?.map((item: any) => {
                         return (
-                            <Checkbox
+                            <View
                                 key={item.id}
-                                label={item.name}
-                                value={zippyAlert.services?.includes(item.id)}
-                                color={COLORS.primaryOrangeHex}
-                                containerStyle={styles.viewStyles}
-                                onValueChange={(isChecked: boolean) => {
-                                    // Check if the service ID is already in the array
-                                    const isServiceInArray = zippyAlert.services?.includes(item.id);
+                                style={{ marginVertical: 5 }}
+                            >
+                                <Checkbox
 
-                                    // Create a new array based on the checkbox state
-                                    let updatedServices: any[];
+                                    label={item.name}
+                                    value={zippyAlert.services?.includes(item.id)}
+                                    color={COLORS.primaryOrangeHex}
+                                    onValueChange={(isChecked: boolean) => {
+                                        // Check if the service ID is already in the array
+                                        const isServiceInArray = zippyAlert.services?.includes(item.id);
 
-                                    if (isChecked && !isServiceInArray) {
-                                        // Add the service ID to the array if the checkbox is checked and the ID is not present
-                                        updatedServices = [...(zippyAlert.services || []), item.id];
-                                    } else if (!isChecked && isServiceInArray) {
-                                        // Remove the service ID from the array if the checkbox is unchecked and the ID is present
-                                        updatedServices = (zippyAlert.services || []).filter((id: string) => id !== item.id);
-                                    } else {
-                                        // No change needed if the checkbox state and array state are consistent
-                                        updatedServices = zippyAlert.services;
-                                    }
+                                        // Create a new array based on the checkbox state
+                                        let updatedServices: any[];
 
-                                    // Update the state
-                                    setZippyAlert((prev: any) => {
-                                        return { ...prev, services: updatedServices };
-                                    });
-                                }}
-                            />
+                                        if (isChecked && !isServiceInArray) {
+                                            // Add the service ID to the array if the checkbox is checked and the ID is not present
+                                            updatedServices = [...(zippyAlert.services || []), item.id];
+                                        } else if (!isChecked && isServiceInArray) {
+                                            // Remove the service ID from the array if the checkbox is unchecked and the ID is present
+                                            updatedServices = (zippyAlert.services || []).filter((id: string) => id !== item.id);
+                                        } else {
+                                            // No change needed if the checkbox state and array state are consistent
+                                            updatedServices = zippyAlert.services;
+                                        }
+
+                                        // Update the state
+                                        setZippyAlert((prev: any) => {
+                                            return { ...prev, services: updatedServices };
+                                        });
+                                    }}
+                                />
+                            </View>
                         );
                     })
 
@@ -626,7 +628,7 @@ const ZippyAlert = () => {
         {/* alert area */}
 
         {/* location details */}
-        <View style={[styles.viewStyles]}>
+        <View>
             <View>
                 <Text style={generalStyles.CardTitle}>Location Details</Text>
             </View>
