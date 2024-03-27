@@ -186,6 +186,75 @@ const DrawerContent = (props: any) => {
                     inactiveTintColor={COLORS.primaryWhiteHex}
                 />
 
+                <DrawerItem
+                    label="Payments"
+                    icon={() => <AntDesign
+                        name="creditcard"
+                        size={25}
+                        color={selectedItem === 'Payments' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
+
+                    />}
+                    onPress={() => {
+                        setSelectedItem('Payments');
+                        if (guestUser) {
+                            return handleShowAlert()
+                        }
+                        else {
+                            return navigation.navigate('Payments');
+                        }
+
+                    }}
+                    style={[{
+                        backgroundColor:
+                            selectedItem === 'Payments'
+                                ? COLORS.primaryOrangeHex
+                                : COLORS.primaryBlackHex,
+
+
+                    }, styles.tabStyles]}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Payments' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
+
+                    activeBackgroundColor={COLORS.primaryOrangeHex}
+                    activeTintColor={COLORS.primaryWhiteHex}
+                    inactiveBackgroundColor={COLORS.primaryBlackHex}
+                    inactiveTintColor={COLORS.primaryWhiteHex}
+                />
+
+                {/* bookings */}
+                <DrawerItem
+                    label="Bookings"
+                    icon={() => <AntDesign
+                        name="book"
+                        size={25}
+                        color={selectedItem === 'Bookings' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex}
+
+                    />}
+                    onPress={() => {
+                        setSelectedItem('Bookings');
+                        if (guestUser) {
+                            return handleShowAlert()
+                        }
+                        else {
+                            return navigation.navigate('Bookings');
+                        }
+
+                    }}
+                    style={[{
+                        backgroundColor:
+                            selectedItem === 'Bookings'
+                                ? COLORS.primaryOrangeHex
+                                : COLORS.primaryBlackHex,
+
+
+                    }, styles.tabStyles]}
+                    labelStyle={[styles.labelStyle, { color: selectedItem === 'Bookings' ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex }]}
+
+                    activeBackgroundColor={COLORS.primaryOrangeHex}
+                    activeTintColor={COLORS.primaryWhiteHex}
+                    inactiveBackgroundColor={COLORS.primaryBlackHex}
+                    inactiveTintColor={COLORS.primaryWhiteHex}
+                />
+                {/* bookings */}
 
                 <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
                 {/* drawer section */}

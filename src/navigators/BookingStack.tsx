@@ -2,11 +2,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import PaymentTabs from '../screens/payments/PaymentTabs';
 import PaymentDetails from '../screens/payments/PaymentDetails';
 import { COLORS } from '../theme/theme';
 import { generalStyles } from '../screens/utils/generatStyles';
 import ArrowBack from '../components/ArrowBack';
+import BookingTabs from '../screens/Bookings/BookingTabs';
+import BookingDetails from '../screens/Bookings/BookingDetails';
 
 
 
@@ -18,7 +19,7 @@ const Stack = createNativeStackNavigator();
  *
  * @return {ReactNode} The rendered SupportStack component.
  */
-function PaymentStack() {
+function BookingStack() {
 
 
 
@@ -27,14 +28,14 @@ function PaymentStack() {
     return (
 
         <Stack.Navigator
-            initialRouteName='PaymentTabs'
+            initialRouteName='BookingTabs'
         >
 
             <Stack.Screen
-                name="PaymentTabs"
-                component={PaymentTabs}
+                name="BookingTabs"
+                component={BookingTabs}
                 options={{
-                    title: 'My Payments',
+                    title: 'My Bookings',
                     headerStyle: {
                         backgroundColor: COLORS.primaryOrangeHex
                     },
@@ -50,21 +51,10 @@ function PaymentStack() {
             />
 
             <Stack.Screen
-                name="PaymentDetails"
-                component={PaymentDetails}
+                name="BookingDetails"
+                component={BookingDetails}
                 options={{
-                    title: 'Payment Details',
-                    headerStyle: {
-                        backgroundColor: COLORS.primaryBlackHex,
-                    },
-                    headerTitleStyle: {
-                        fontSize: 30,
-                    },
-                    headerTintColor: COLORS.primaryWhiteHex,
-                    headerTitleAlign: 'center',
-                    headerLeft: () => (
-                        <ArrowBack />
-                    ),
+                    headerShown: false
                 }}
             />
 
@@ -73,4 +63,4 @@ function PaymentStack() {
     );
 }
 
-export default PaymentStack
+export default BookingStack

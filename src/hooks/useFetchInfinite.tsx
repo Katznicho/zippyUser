@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { err } from 'react-native-svg';
 
 const fetcher = async (limit: number = 20, pageNumber: number = 1, queryUrl: string, status = null) => {
     try {
@@ -15,9 +16,6 @@ const fetcher = async (limit: number = 20, pageNumber: number = 1, queryUrl: str
             url += `&status=${status}`;
         }
 
-        // console.log("===========url=======================")
-        // console.log(url)
-        // console.log("===========url=======================")
 
         const response = await fetch(url, {
             method: 'GET',
@@ -25,9 +23,6 @@ const fetcher = async (limit: number = 20, pageNumber: number = 1, queryUrl: str
         });
 
         const data = await response.json();
-
-
-
 
         return {
             data: data?.data?.data,

@@ -17,10 +17,14 @@ export const UPDATE_PASSWORD_FIRST_USER = `${BASE_URL}/auth/resetPasswordFirstUs
 //payments
 export const PROCESSORDER = `${BASE_URL}/processOrder`;
 export const USERPAYMENTS = `${BASE_URL}/getUserPayments`;
-export const USERPRODUCTS = `${BASE_URL}/getUserProducts`
+export const USERPRODUCTS = `${BASE_URL}/getUserProducts`;
+export const USERBOOKINGS =  `${BASE_URL}/getUserBookings`;
 
 export const USERDELIVERIES = `${BASE_URL}/getUserDelivries`
 export const USERNOTIFICATIONS = `${BASE_URL}/getUserNotifications`
+
+//booking
+export const CREATE_BOOKING = `${BASE_URL}/createUserBooking`;
 
 //uploads
 export const PROFILE_UPLOAD = `${BASE_URL}/profileUpload`;

@@ -238,12 +238,8 @@ const ZippyAlert = () => {
                 })
             }
             else {
-                console.log("=======zippy alert=========")
-                console.log(zippyAlert)
-                console.log("=======zippy alert=========")
                 setLoading(true)
                 const myHeaders = new Headers();
-                // myHeaders.append("X-Requested-With", "XMLHttpRequest");
                 myHeaders.append("Authorization", `Bearer ${authToken}`);
 
                 const formData = new FormData();
@@ -289,9 +285,6 @@ const ZippyAlert = () => {
                 fetch(CREATE_ZIPPY_ALERT, requestOptions)
                     .then((response) => response.json())
                     .then((result) => {
-                        console.log("===================")
-                        console.log(result)
-                        console.log("===================")
                         setLoading(false)
                         if (result?.response === "success") {
                             showMessage({

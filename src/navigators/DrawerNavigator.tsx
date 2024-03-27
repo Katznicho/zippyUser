@@ -2,16 +2,16 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import { COLORS } from '../theme/theme';
 import CustomIcon from '../components/CustomIcon';
-import PaymentStack from './PaymentStack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DrawerContent from '../components/DrawerContent';
 import SupportStack from './SupportStack';
 import AboutUsStack from './AboutUsStack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/dev';
-import UpdatePasswordStack from './UpdatePasswordStack';
 import SearchStack from './SearchStack';
 import ZippyAlertStack from './ZippyAlertStack';
+import PaymentStack from './PaymentStack';
+import BookingStack from './BookingStack';
 
 
 const Drawer = createDrawerNavigator();
@@ -77,6 +77,20 @@ const DrawerNavigator = () => {
           drawerIcon: ({ focused, color, size }) => (
             <AntDesign
               name="creditcard"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Bookings"
+        component={BookingStack}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <AntDesign
+              name="book"
               size={size}
               color={color}
             />

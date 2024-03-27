@@ -2,21 +2,20 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ImageBackground, 
 import React, { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { generalStyles } from './utils/generatStyles'
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
-import GradientBGIcon from '../components/GradientBGIcon';
 import QRCode from 'react-native-qrcode-svg';
-import { onMakeCall } from './utils/helpers/helpers'
-import { showAuthScreen } from '../redux/store/slices/UserSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../redux/store/dev'
-import { CREATE_BOOKING } from './utils/constants/routes'
-import { showMessage } from 'react-native-flash-message'
-import { ActivityIndicator } from '../components/ActivityIndicator'
+import { showMessage } from 'react-native-flash-message';
+import { generalStyles } from '../utils/generatStyles';
+import GradientBGIcon from '../../components/GradientBGIcon';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../../theme/theme';
+import { ActivityIndicator } from '../../components/ActivityIndicator';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/dev';
+import { showAuthScreen } from '../../redux/store/slices/UserSlice';
 
 
 
-const StationDetails = () => {
+
+const BookingDetails = () => {
 
     const navigation = useNavigation<any>();
 
@@ -75,30 +74,30 @@ const StationDetails = () => {
                 body,
             };
 
-            fetch(`${CREATE_BOOKING}`, requestOptions)
-                .then((response) => response.json())
-                .then((result) => {
-                    console.log(result)
-                    showMessage({
-                        message: "Booked Successfully",
-                        description: "We will get back to you soon",
-                        type: "success",
-                        icon: "success",
-                    });
-                    setLoading(false)
-                    return navigation.navigate("Bookings")
-                })
-                .catch((error) => {
-                    console.log(error)
-                    setLoading(false)
-                    showMessage({
-                        message: "Booked Failed",
-                        description: "Please try again",
-                        type: "info",
-                        icon: "info",
-                    });
+            // fetch(`${CREATE_BOOKING}`, requestOptions)
+            //     .then((response) => response.json())
+            //     .then((result) => {
+            //         console.log(result)
+            //         showMessage({
+            //             message: "Booked Successfully",
+            //             description: "We will get back to you soon",
+            //             type: "success",
+            //             icon: "success",
+            //         });
+            //         setLoading(false)
+            //         return navigation.navigate("Bookings")
+            //     })
+            //     .catch((error) => {
+            //         console.log(error)
+            //         setLoading(false)
+            //         showMessage({
+            //             message: "Booked Failed",
+            //             description: "Please try again",
+            //             type: "info",
+            //             icon: "info",
+            //         });
 
-                });
+            //     });
 
         }
     }
@@ -119,7 +118,7 @@ const StationDetails = () => {
             >
                 {/* show background image */}
                 <ImageBackground
-                    source={{ uri: `${data?.cover_image}` }}
+                    source={{ uri: `${data?.property?.cover_image}` }}
                     style={styles.dataBackgroundImage}
                 >
                     {/* back handler */}
@@ -163,7 +162,7 @@ const StationDetails = () => {
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
                         <View>
                             <Text style={styles.CardTitle} >Name</Text>
-                            <Text style={styles.CardSubtitle}>{data?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property?.name}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Distance</Text>
@@ -186,7 +185,7 @@ const StationDetails = () => {
                                     style={[generalStyles.loginContainer, { width: "100%" }]}
                                     onPress={() => handleBookNow()}
                                 >
-                                    <Text style={generalStyles.loginText}>{'Book Now'}</Text>
+                                    <Text style={generalStyles.loginText}>{'Cancel Now'}</Text>
                                 </TouchableOpacity>
                             </View>
                             {/* book now button */}
@@ -198,11 +197,11 @@ const StationDetails = () => {
                     <View>
                         <View>
                             <Text style={styles.CardTitle} >Location</Text>
-                            <Text style={styles.CardSubtitle}>{data?.location}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property?.location}</Text>
                         </View>
                         <View>
                             <Text style={styles.CardTitle} >Payment Period</Text>
-                            <Text style={styles.CardSubtitle}>{data?.payment_period?.name}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property?.payment_period?.name}</Text>
                         </View>
 
                     </View>
@@ -210,7 +209,7 @@ const StationDetails = () => {
                     <View>
                         <View>
                             <Text style={styles.CardTitle} >Price</Text>
-                            <Text style={styles.CardSubtitle}>{data?.currency?.name} {data?.price}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property?.currency?.name} {data?.property?.price}</Text>
                         </View>
 
 
@@ -219,14 +218,11 @@ const StationDetails = () => {
                     {/* actions and total bookings */}
 
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
-                        <View>
-                            <Text style={styles.CardTitle} >Total Bookings</Text>
-                            <Text style={styles.CardSubtitle}>0</Text>
-                        </View>
+
                         <View>
                             <Text style={styles.CardTitle} >Scan Me</Text>
                             {/* actions area */}
-                            <QRCode value={data?.zippy_id}
+                            <QRCode value={data?.property?.zippy_id}
                                 size={50}
                             />
                             {/* actions area */}
@@ -247,40 +243,15 @@ const StationDetails = () => {
 
                     </View>
                     <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]}>
-                        <View>
-                            <Text style={styles.CardTitle} >Status</Text>
-                            <Text style={styles.CardSubtitle}>{data?.status?.name}</Text>
-                        </View>
+
                         <View>
                             <Text style={styles.CardTitle} >Zippy ID</Text>
-                            <Text style={styles.CardSubtitle}>{data?.zippy_id}</Text>
+                            <Text style={styles.CardSubtitle}>{data?.property?.zippy_id}</Text>
                         </View>
 
                     </View>
 
-                    <View >
-                        <View>
-                            <Text style={styles.CardTitle} >Description</Text>
-                            <Text style={styles.CardSubtitle}>{data?.description}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Year Built</Text>
-                            <Text style={styles.CardSubtitle}>{data?.year_built}</Text>
-                        </View>
 
-                    </View>
-
-                    <View >
-                        <View>
-                            <Text style={styles.CardTitle} >Furnishing Status</Text>
-                            <Text style={styles.CardSubtitle}>{data?.furnishing_status}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Property Size</Text>
-                            <Text style={styles.CardSubtitle}>{data?.property_size}</Text>
-                        </View>
-
-                    </View>
 
 
                     <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
@@ -289,7 +260,7 @@ const StationDetails = () => {
                             <Text style={styles.CardTitle} >Services</Text>
                             {/* <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text> */}
                             {
-                                data?.services?.map((service: any, index: number) => {
+                                data?.property?.services?.map((service: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{service?.name}</Text>
                                     )
@@ -299,7 +270,7 @@ const StationDetails = () => {
                         <View>
                             <Text style={styles.CardTitle} >Amentities</Text>
                             {
-                                data?.amenities?.map((amentity: any, index: number) => {
+                                data?.properrty?.amenities?.map((amentity: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{amentity?.name}</Text>
                                     )
@@ -316,7 +287,7 @@ const StationDetails = () => {
                             <Text style={styles.CardTitle} >Public facilties</Text>
                             {/* <Text style={styles.CardSubtitle}>{data?.is_approved ? 'Yes' : "No"}</Text> */}
                             {
-                                data?.public_facilities?.map((facility: any, index: number) => {
+                                data?.property?.public_facilities?.map((facility: any, index: number) => {
                                     return (
                                         <Text style={styles.CardSubtitle} key={index}>{facility}</Text>
                                     )
@@ -329,26 +300,6 @@ const StationDetails = () => {
                     <View style={[generalStyles.bottomHairline, styles.hairLineStyles]} />
                     {/* public facilties */}
 
-                    {/* owner details */}
-
-                    <View style={[generalStyles.flexStyles, { justifyContent: 'space-between', alignItems: "center" }]} >
-                        <View>
-                            <Text style={styles.CardTitle} >Owner</Text>
-                            <Text style={styles.CardSubtitle}>{data?.owner?.name}</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.CardTitle} >Phone Number</Text>
-                            <Text style={styles.CardSubtitle}>{data?.owner?.phone_number}</Text>
-                        </View>
-
-                    </View>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={[generalStyles.loginContainer, { marginTop: 0, padding: 10 }]}
-                        onPress={() => onMakeCall(data?.owner?.phone_number)}>
-                        <Text style={generalStyles.loginText}>{'Call Owner'}</Text>
-                    </TouchableOpacity>
-                    {/* owner details */}
                 </View>
                 {loading && <ActivityIndicator style={{ marginTop: 20 }} size="large" color={COLORS.primaryWhiteHex} />}
             </ScrollView>
@@ -356,7 +307,7 @@ const StationDetails = () => {
     )
 }
 
-export default StationDetails
+export default BookingDetails
 
 const styles = StyleSheet.create({
     cardContainer: {
