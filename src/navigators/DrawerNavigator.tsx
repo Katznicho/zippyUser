@@ -12,6 +12,7 @@ import SearchStack from './SearchStack';
 import ZippyAlertStack from './ZippyAlertStack';
 import PaymentStack from './PaymentStack';
 import BookingStack from './BookingStack';
+import PointStack from './PointStack';
 
 
 const Drawer = createDrawerNavigator();
@@ -117,6 +118,10 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="ZippyAlertStack"
         component={ZippyAlertStack}
+      />
+      <Drawer.Screen
+        name="LoadPoints"
+        component={PointStack}
       />
 
     </Drawer.Navigator>

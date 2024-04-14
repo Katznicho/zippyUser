@@ -21,6 +21,8 @@ import PropertyImages from '../screens/PropertyImages';
 import EditPropertyServices from '../screens/EditPropertyServices';
 import HeaderBar from '../components/HeaderBar';
 import ZippyAlert from '../screens/ZippyAlert';
+import MyWebView from '../screens/MyWebView';
+import Deposit from '../screens/Deposit';
 
 const Stack = createNativeStackNavigator();
 
@@ -203,7 +205,7 @@ const HomeStack = () => {
 
             {/* edit property services */}
             <Stack.Screen
-                name="c"
+                name="EditServices"
                 component={EditPropertyServices}
                 options={{
                     title: 'Edit Services',
@@ -217,6 +219,31 @@ const HomeStack = () => {
                 }}>
             </Stack.Screen>
             {/* edit property services */}
+
+            {/* load points */}
+            <Stack.Screen
+                name="LoadPoints"
+                component={Deposit}
+                options={{
+                    title: 'Load Points',
+                    animation: 'slide_from_bottom',
+                    // headerShown: false
+                    headerStyle: generalStyles.headerStyle,
+                    headerTitleStyle: generalStyles.titleHeaderStyles,
+                    headerTintColor: COLORS.primaryBlackHex,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => <ArrowBack />
+                }}>
+            </Stack.Screen>
+            {/* load points */}
+
+            <Stack.Screen
+                name="MyWebView"
+                component={MyWebView}
+                options={{
+                    headerShown: false
+                }}
+            />
 
 
             {/* payments screen  */}

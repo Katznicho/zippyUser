@@ -21,6 +21,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { logoutUser, showAuthScreen } from '../redux/store/slices/UserSlice';
 import { LOGOUT } from '../screens/utils/constants/routes';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
 
@@ -219,6 +220,38 @@ const DrawerContent = (props: any) => {
                     inactiveBackgroundColor={COLORS.primaryBlackHex}
                     inactiveTintColor={COLORS.primaryWhiteHex}
                 />
+
+                {/* load points */}
+                {/* donate */}
+                <DrawerItem
+                    label="Points"
+                    icon={() => <FontAwesome5
+                        name="donate"
+                        size={25}
+                        color={COLORS.primaryWhiteHex}
+                    />
+                    }
+                    onPress={() => {
+                        setSelectedItem('LoadPoints');
+                        // props.navigation.navigate('HomeDrawer')
+                        navigation.navigate('LoadPoints');
+                    }}
+                    style={[{
+                        backgroundColor:
+                            selectedItem === 'LoadPoints'
+                                ? COLORS.primaryOrangeHex
+                                : COLORS.primaryBlackHex,
+
+                    }, styles.tabStyles]}
+                    labelStyle={styles.labelStyle}
+                    // active={selectedItem === 'Home'}
+                    activeBackgroundColor={COLORS.primaryOrangeHex}
+                    activeTintColor={COLORS.primaryWhiteHex}
+                    inactiveBackgroundColor={COLORS.primaryBlackHex}
+                    inactiveTintColor={COLORS.primaryWhiteHex}
+                />
+                {/* donate */}
+                {/* load points */}
 
                 {/* bookings */}
                 <DrawerItem

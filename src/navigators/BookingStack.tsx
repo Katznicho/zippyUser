@@ -2,7 +2,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import PaymentDetails from '../screens/payments/PaymentDetails';
 import { COLORS } from '../theme/theme';
 import { generalStyles } from '../screens/utils/generatStyles';
 import ArrowBack from '../components/ArrowBack';
